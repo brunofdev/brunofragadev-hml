@@ -35,8 +35,8 @@ public class GlobalExceptionHandler {
 
     // Exceções de Conflito (Ex: Dados duplicados) - Status 409
     @ExceptionHandler({
-            UsernameAlreadyExistsException.class
-            // EmailAlreadyExistsException.class
+            UsernameAlreadyExistsException.class,
+            EmailAlreadyExistsException.class
     })
     public ResponseEntity<Map<String, Object>> handleConflictExceptions(RuntimeException ex) {
         return buildError(HttpStatus.CONFLICT, ex.getMessage());
@@ -46,10 +46,8 @@ public class GlobalExceptionHandler {
     // Exceções de Busca (Ex: Registro não existe no banco) - Status 404
     @ExceptionHandler({
             UserNotFoundException.class,
-            EmailAlreadyExistsException.class,
             UserDontFoundException.class,
-            UserDontHaveEmailRegistered.class,
-            UsernameAlreadyExistsException.class
+            UserDontHaveEmailRegistered.class
     })
     public ResponseEntity<Map<String, Object>> handleNotFoundExceptions(RuntimeException ex) {
         return buildError(HttpStatus.NOT_FOUND, ex.getMessage());
