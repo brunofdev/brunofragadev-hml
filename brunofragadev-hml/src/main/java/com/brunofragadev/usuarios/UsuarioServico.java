@@ -42,7 +42,7 @@ public class UsuarioServico {
     }
 
     public UsuarioDTO autenticarUsuario(String userName, String senha) {
-        Usuario usuario = usuarioRepositorio.findByUserName(userName).orElseThrow(() -> new UserNotFoundException("nome de Usuario não encontrado"));
+        Usuario usuario = usuarioRepositorio.findByUserName(userName.toUpperCase()).orElseThrow(() -> new UserNotFoundException("nome de Usuario não encontrado"));
         if (!codificadorSenha.matches(senha, usuario.getSenha())) {
             throw new InvalidCredentialsException("Credenciais inválidas");
         }
