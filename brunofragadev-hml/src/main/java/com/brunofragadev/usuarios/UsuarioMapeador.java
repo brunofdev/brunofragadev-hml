@@ -7,21 +7,21 @@ import java.util.List;
 @Component
 public class UsuarioMapeador {
     public Usuario mapearNovoUsuario(CadastrarUsuarioDTO dto) {
-        Usuario cliente = new Usuario();
-        cliente.setNome(dto.nome());
-        cliente.setSenha(dto.senha());
-        cliente.setEmail(dto.email());
-        cliente.setUserName(dto.userName());
-        return cliente;
+        Usuario usuario = new Usuario();
+        usuario.setNome(dto.nome());
+        usuario.setSenha(dto.senha());
+        usuario.setEmail(dto.email());
+        usuario.setUserName(dto.userName());
+        return usuario;
     }
-    public UsuarioDTO mapearUsuarioParaUsuarioDTO(Usuario novoCliente) {
+    public UsuarioDTO mapearUsuarioParaUsuarioDTO(Usuario novoUsuario) {
         return new UsuarioDTO(
-                novoCliente.getId(),
-                novoCliente.getNome(),
-                novoCliente.getUsername(),
-                novoCliente.getEmail(),
-                novoCliente.getRole(),
-                novoCliente.isContaAtiva()
+                novoUsuario.getId(),
+                novoUsuario.getNome(),
+                novoUsuario.getUsername(),
+                novoUsuario.getEmail(),
+                novoUsuario.getRole(),
+                novoUsuario.isContaAtiva()
         );
     }
     public List<UsuarioDTO> mapearListaUsuarioParaUsuarioDTO(List<Usuario> usuarios){

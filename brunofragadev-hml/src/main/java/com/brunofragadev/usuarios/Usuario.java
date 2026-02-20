@@ -47,15 +47,15 @@ public class Usuario implements UserDetails {
     @Column(name = "pais")
     private String pais;
     @Column(name = "cidade")
-    String cidade;
+    private String cidade;
     @Column(name = "fotoperfil")
-    String fotoperfil;
+    private String fotoperfil;
     @Column(name = "github")
-    String github;
+    private String github;
     @Column(name = "linkedin")
-    String linkedin;
+    private String linkedin;
     @Column(name = "bio")
-    String bio;
+    private String bio;
 
 
 
