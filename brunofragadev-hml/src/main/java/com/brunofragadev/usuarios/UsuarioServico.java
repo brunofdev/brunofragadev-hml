@@ -3,6 +3,7 @@ package com.brunofragadev.usuarios;
 import com.brunofragadev.email.ServicoDeEmail;
 import com.brunofragadev.usuarios.exceptions.InvalidCredentialsException;
 import com.brunofragadev.usuarios.exceptions.UserNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +30,7 @@ public class UsuarioServico {
         this.codificadorSenha = codificadorSenha;
         this.servicoDeEmail = servicoDeEmail;
     }
-
+    @Transactional
     public UsuarioDTO cadastrarUsuario(CadastrarUsuarioDTO dtoComSenhaCodificada) {
         usuarioValidador.validarNovoUsuario(dtoComSenhaCodificada, false);
         Usuario usuario = usuarioMapeador.mapearNovoUsuario(dtoComSenhaCodificada);

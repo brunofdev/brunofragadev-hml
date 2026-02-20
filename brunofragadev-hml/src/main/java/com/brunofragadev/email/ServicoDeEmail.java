@@ -15,10 +15,10 @@ public class ServicoDeEmail {
 
     private final WebClient clienteWeb;
 
-    @Value("${BREVO_API_KEY}")
+    @Value("${brevo.api.key}")
     private String chaveApi;
 
-    @Value("${BREVO_SENDER_EMAIL}")
+    @Value("${brevo.sender.email}")
     private String emailRemetente;
 
     public ServicoDeEmail(WebClient.Builder construtorWebClient) {
