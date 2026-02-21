@@ -37,6 +37,8 @@ public class SecurityConfigurations {
             "/swagger-ui.html",
             "/usuario/cadastro",
             "/usuario/obter-todos",
+            "/usuario/ativar-conta",
+            "/usuario/reenviar-codigo",
             "/feedback/listar-todos"
             //>>>>>>>>>>>>>LIBERADO PUBLICAMENTE PARA TESTES APENAS<<<<<<<<<<<
     };
