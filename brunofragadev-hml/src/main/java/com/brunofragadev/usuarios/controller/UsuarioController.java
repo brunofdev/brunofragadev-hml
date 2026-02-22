@@ -1,11 +1,13 @@
 package com.brunofragadev.usuarios.controller;
 
 import com.brunofragadev.usuarios.dto.*;
+import com.brunofragadev.usuarios.entity.Usuario;
 import com.brunofragadev.usuarios.service.UsuarioServico;
 import com.brunofragadev.utils.retorno_padrao_api.ApiResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -40,6 +42,11 @@ public class UsuarioController {
     public ResponseEntity<ApiResponse<UsuarioDTO>> ativarConta(@RequestBody @Valid AutenticarUsuarioDTO dto) {
         UsuarioDTO usuarioAtivado = usuarioServico.autenticarContaAtiva(dto);
         return ResponseEntity.ok(ApiResponse.success("Recurso disponivel", usuarioAtivado));
+    }
+    @GetMapping("/meus-dados/{userName}")
+    public ResponseEntity<ApiResponse<UsuarioDTO>> getUserDetailsByUsername(@AuthenticationPrincipal Usuario usuarioAutenticado){
+        UsuarioDTO UserDTO = usuarioServico.fornecerDadosUsuarioAutenticado(usuarioAutenticado.getUsername());
+        return ResponseEntity.ok().body(ApiResponse.success("Dados do usario autenticado", UserDTO));
     }
 
     @PostMapping("/reenviar-codigo")

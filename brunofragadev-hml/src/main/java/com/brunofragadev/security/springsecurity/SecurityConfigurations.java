@@ -49,15 +49,10 @@ public class SecurityConfigurations {
     //ROTAS PROTEGIDAS
     private static final Map<String, Role> PROTECTED_ROUTES = Map.of(
             //Apenas USER+
-                 "/feedback/criar", Role.USER
+            "/usuario/meus-dados/{userName}", Role.USER,
+            "/feedback/criar", Role.USER
             //Apenas ADMIN1+
-            ,"/produtos/adicionar-produto", Role.ADMIN1
-            ,"/pedido/*/status", Role.ADMIN1
-            ,"/pedido/obter-pedidos-do-dia", Role.ADMIN1
-            ,"/cardapioproduto/associar-cardapioproduto", Role.ADMIN1
-            ,"/cardapioproduto/atualizar-campos-custom", Role.ADMIN1
             //Apenas ADMIN2+
-            ,"/cardapioproduto/cardapio{idCardapio}/produto{idProduto}", Role.ADMIN2
     );
 
     @Bean

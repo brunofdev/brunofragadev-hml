@@ -82,7 +82,10 @@ public class UsuarioServico {
     public boolean existePorNomeUsuario(String nomeUsuario) {
         return usuarioRepositorio.existsByUserName(nomeUsuario);
     }
-
+    public UsuarioDTO fornecerDadosUsuarioAutenticado(String userName){
+        Usuario usuario = buscarUsuarioPorUserName(userName);
+        return usuarioMapeador.mapearUsuarioParaUsuarioDTO(usuario);
+    }
     public List<UsuarioDTO> listarUsuarios() {
         return usuarioMapeador.mapearListaUsuarioParaUsuarioDTO(usuarioRepositorio.findAll());
     }
