@@ -16,12 +16,12 @@ public interface FeedbackRepositorio extends JpaRepository<Feedback, Long> {
             u.userName,
             f.descricao,
             f.avaliacao,
-            f.dataDeCriacao,
+            f.dataCriacao,
             u.fotoperfil
         )
         FROM Feedback f
         JOIN f.usuario u
-        ORDER BY f.dataDeCriacao DESC
+        ORDER BY f.dataCriacao DESC
     """)
     List<FeedbackDTO> buscarTodosComFotos();
 
