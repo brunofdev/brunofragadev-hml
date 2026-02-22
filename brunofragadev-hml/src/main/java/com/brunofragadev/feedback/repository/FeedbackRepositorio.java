@@ -12,11 +12,11 @@ import java.util.List;
 public interface FeedbackRepositorio extends JpaRepository<Feedback, Long> {
     @Query("""
         SELECT new com.brunofragadev.feedback.dto.FeedbackDTO(
-            f.id, 
-            f.descricao, 
-            f.avaliacao, 
-            f.dataDeCriacao, 
-            u.userName, 
+            f.id,
+            u.userName,
+            f.descricao,
+            f.avaliacao,
+            f.dataDeCriacao,
             u.fotoperfil
         )
         FROM Feedback f
