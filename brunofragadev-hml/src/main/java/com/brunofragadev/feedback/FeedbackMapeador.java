@@ -16,13 +16,15 @@ public class FeedbackMapeador {
         feedback.setAvaliacao(dto.avaliacao());
         return feedback;
     }
+    //VERIFICAR, POIS EXISTE UM CONSULTA NO REPOSITORIO QUE RETORNA UM DTO DIRETAMENTE, NO UNICO CASO DE USO ATE O MOMENTO
     public FeedbackDTO mapearFeedbackDTO(Feedback feedback){
         return new FeedbackDTO(
                 feedback.getId(),
                 feedback.getUsuario().getUsername(),
                 feedback.getDescricao(),
                 feedback.getAvaliacao(),
-                feedback.getDataCriacao()
+                feedback.getDataCriacao(),
+                "" // POR ISSO A STRING VAZIA AQUI, ESTE METODO NAO ESTA SENDO UTILIZADO
         );
     }
     public List<FeedbackDTO> mapearListaDeFeedbacks(List<Feedback> feedbacks){
