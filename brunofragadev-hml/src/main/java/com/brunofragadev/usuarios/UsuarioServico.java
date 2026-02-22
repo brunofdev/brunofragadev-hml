@@ -100,7 +100,7 @@ public class UsuarioServico {
     }
     @Transactional
     public UsuarioRecuperacaoSenhaDTO enviarCodigoRecuperacaoSenhaPorEmail (String userNameOuEmail){
-        Usuario usuario = buscarPorUserNameOuEmail(userNameOuEmail, userNameOuEmail);
+        Usuario usuario = buscarPorUserNameOuEmail(userNameOuEmail.toUpperCase(), userNameOuEmail.toUpperCase());
         String codigoGerado = String.format("%06d", new Random().nextInt(999999));
         usuario.setCodigoVerificacao(codigoGerado);
         usuario.setExpiracaoCodigo(LocalDateTime.now().plusMinutes(5));
@@ -110,7 +110,7 @@ public class UsuarioServico {
     }
     @Transactional
     public void validarCodigoRecuperacaoSenha (AutenticarUsuarioDTO dto){
-        Usuario usuario = buscarUsuarioPorUserName(dto.userName().toUpperCase());
+        Usuario usuario = buscarPorUserNameOuEmail(dto.userName().toUpperCase(), dto.userName().toUpperCase());
         validarCodigo(usuario, dto.codigo());
     }
     @Transactional
