@@ -59,6 +59,14 @@ public class UsuarioServico {
         }
     }
     @Transactional
+    public UsuarioDTO atualizarDadosPerfil(String userName, AtualizarDadosPerfilDTO dadosAtualizados){
+        Usuario usuario = buscarUsuarioPorUserName(userName.toUpperCase());
+        Usuario usuarioAtualizado = usuarioMapeador.mapearDadosAtualizadosPerfil(usuario, dadosAtualizados);
+        usuarioRepositorio.save(usuarioAtualizado);
+        return usuarioMapeador.mapearUsuarioParaUsuarioDTO(usuarioAtualizado);
+    }
+
+    @Transactional
     public void gerarNovoCodigo (String userName){
         Usuario usuario = buscarUsuarioPorUserName(userName.toUpperCase());
         String codigoGerado = String.format("%06d", new Random().nextInt(999999));

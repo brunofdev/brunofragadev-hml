@@ -71,5 +71,12 @@ public class UsuarioController {
         usuarioServico.alterarSenhaUsuario(dtoSenhaCodificada);
         return ResponseEntity.noContent().build();
     }
+    @PatchMapping("/meus-dados/atualizar")
+    public ResponseEntity<ApiResponse<UsuarioDTO>> atualizarPerfil(
+            @AuthenticationPrincipal Usuario usuarioAutenticado,
+            @Valid @RequestBody AtualizarDadosPerfilDTO dto) {
+        UsuarioDTO perfilAtualizado = usuarioServico.atualizarDadosPerfil(usuarioAutenticado.getUsername(), dto);
+        return ResponseEntity.ok(ApiResponse.success("Perfil atualizado com sucesso", perfilAtualizado));
+    }
 }
 

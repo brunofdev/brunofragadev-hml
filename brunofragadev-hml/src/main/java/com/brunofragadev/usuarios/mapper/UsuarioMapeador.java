@@ -1,5 +1,6 @@
 package com.brunofragadev.usuarios.mapper;
 
+import com.brunofragadev.usuarios.dto.AtualizarDadosPerfilDTO;
 import com.brunofragadev.usuarios.entity.Usuario;
 import com.brunofragadev.usuarios.dto.CadastrarUsuarioDTO;
 import com.brunofragadev.usuarios.dto.UsuarioDTO;
@@ -39,4 +40,15 @@ public class UsuarioMapeador {
         return usuarios.stream()
                 .map(usuario -> mapearUsuarioParaUsuarioDTO(usuario)).toList();
     }
+    public Usuario mapearDadosAtualizadosPerfil(Usuario usuario, AtualizarDadosPerfilDTO novosDados){
+        usuario.setProfissao(novosDados.profissao());
+        usuario.setCidade(novosDados.cidade());
+        usuario.setPais(novosDados.pais());
+        usuario.setGithub(novosDados.gitHub());
+        usuario.setLinkedin(novosDados.linkedin());
+        usuario.setFotoperfil(novosDados.fotoPerfil());
+        usuario.setTelefone(novosDados.telefone());
+        usuario.setBio(novosDados.bio());
+        return usuario;
+    };
 }

@@ -50,7 +50,9 @@ public class SecurityConfigurations {
     private static final Map<String, Role> PROTECTED_ROUTES = Map.of(
             //Apenas USER+
             "/usuario/meus-dados", Role.USER,
+            "/usuario/meus-dados/atualizar", Role.USER,
             "/feedback/criar", Role.USER
+
             //Apenas ADMIN1+
             //Apenas ADMIN2+
     );
