@@ -20,7 +20,7 @@ public class FeedbackServico {
         return feedbackMapeador.mapearFeedbackDTO(feedback);
     }
     public List<FeedbackDTO> listarFeedbacks (){
-        return feedbackMapeador.mapearListaDeFeedbacks(feedbackRepositorio.findAll());
+        return feedbackRepositorio.buscarTodosComFotos();
     }
 
 }

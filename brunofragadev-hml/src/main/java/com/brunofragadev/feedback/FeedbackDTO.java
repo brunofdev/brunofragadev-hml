@@ -8,6 +8,7 @@ public record FeedbackDTO(
         String criadoPor,
         String comentario,
         Integer notaAvaliacao,
-        LocalDateTime dataDeCriacao
+        LocalDateTime dataDeCriacao,
+        String fotoUsuario
 ) {
 }
