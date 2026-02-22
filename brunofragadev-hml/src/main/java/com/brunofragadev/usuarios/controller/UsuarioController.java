@@ -43,7 +43,7 @@ public class UsuarioController {
         UsuarioDTO usuarioAtivado = usuarioServico.autenticarContaAtiva(dto);
         return ResponseEntity.ok(ApiResponse.success("Recurso disponivel", usuarioAtivado));
     }
-    @GetMapping("/meus-dados/{userName}")
+    @GetMapping("/meus-dados")
     public ResponseEntity<ApiResponse<UsuarioDTO>> getUserDetailsByUsername(@AuthenticationPrincipal Usuario usuarioAutenticado){
         UsuarioDTO UserDTO = usuarioServico.fornecerDadosUsuarioAutenticado(usuarioAutenticado.getUsername());
         return ResponseEntity.ok().body(ApiResponse.success("Dados do usario autenticado", UserDTO));
