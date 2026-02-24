@@ -43,18 +43,22 @@ public class SecurityConfigurations {
             "/usuario/senha/recuperacao/validar-codigo",
             "/usuario/senha/recuperacao/alterar-senha",
             "/feedback/listar-todos",
+            "/public/projetos/**"
 
             //>>>>>>>>>>>>>LIBERADO PUBLICAMENTE PARA TESTES APENAS<<<<<<<<<<<
     };
     //ROTAS PROTEGIDAS
     private static final Map<String, Role> PROTECTED_ROUTES = Map.of(
-            //Apenas USER+
+            // Apenas USER (e roles superiores, dependendo da sua lógica)
             "/usuario/meus-dados", Role.USER,
             "/usuario/meus-dados/atualizar", Role.USER,
-            "/feedback/criar", Role.USER
+            "/feedback/criar", Role.USER,
 
-            //Apenas ADMIN1+
-            //Apenas ADMIN2+
+            // Apenas ADMIN3 (Protege a listagem e criação)
+            "/paineladm/projetos", Role.ADMIN3,
+
+            // Protege as rotas dinâmicas (ex: /paineladm/projetos/1 para PUT, GET por ID e DELETE)
+            "/paineladm/projetos/**", Role.ADMIN3
     );
 
     @Bean

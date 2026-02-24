@@ -10,6 +10,4 @@ public class BrunofragadevApplication {
 		SpringApplication.run(BrunofragadevApplication.class, args);
         System.out.println("Servidor inicializado com sucesso!");
 	}
-
-
 }
