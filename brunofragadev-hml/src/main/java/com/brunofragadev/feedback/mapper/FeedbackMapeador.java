@@ -17,17 +17,25 @@ public class FeedbackMapeador {
         feedback.setUsuario(usuario);
         feedback.setDescricao(dto.descricao());
         feedback.setAvaliacao(dto.avaliacao());
+        feedback.setTipoFeedback(dto.tipoFeedback());
+        feedback.setReferenciaId(dto.referenciaId());
         return feedback;
     }
-    //VERIFICAR, POIS EXISTE UM CONSULTA NO REPOSITORIO QUE RETORNA UM DTO DIRETAMENTE, NO UNICO CASO DE USO ATE O MOMENTO
+    //VERIFICAR, POIS EXISTE UM CONSULTA NO REPOSITORIO QUE RETORNA UM DTO DIRETAMENTE,
+    // NO UNICO CASO DE USO ATE O MOMENTO
     public FeedbackDTO mapearFeedbackDTO(Feedback feedback){
         return new FeedbackDTO(
                 feedback.getId(),
                 feedback.getUsuario().getUsername(),
+                feedback.getUsuario().getUsername(),
                 feedback.getDescricao(),
                 feedback.getAvaliacao(),
                 feedback.getDataCriacao(),
-                "" // POR ISSO A STRING VAZIA AQUI, ESTE METODO NAO ESTA SENDO UTILIZADO
+                "", // POR ISSO A STRING VAZIA AQUI, ESTE METODO NAO ESTA SENDO UTILIZADO
+                feedback.getTipoFeedback(),
+                feedback.getReferenciaId(),
+                false
+
         );
     }
     public List<FeedbackDTO> mapearListaDeFeedbacks(List<Feedback> feedbacks){

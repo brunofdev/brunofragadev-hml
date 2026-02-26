@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 public class Feedback extends Auditable {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
@@ -27,5 +27,13 @@ public class Feedback extends Auditable {
 
     @Column(name = "avaliacao", nullable = false)
     private Integer avaliacao;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipo_feedback", nullable = false)
+    private TipoFeedback tipoFeedback = TipoFeedback.GERAL;
+
+    // Se for GERAL (Home), fica NULL. Se for Projeto, guarda o ID do Projeto etc.
+    @Column(name = "referencia_id", nullable = true)
+    private Long referenciaId;
 
 }

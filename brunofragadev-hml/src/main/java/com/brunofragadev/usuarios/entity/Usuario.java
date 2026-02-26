@@ -30,6 +30,8 @@ public class Usuario implements UserDetails {
     private String userName;
     @Column(name="senha", nullable = false)
     private String senha;
+    @Column(name="nome_publico", nullable = true)
+    String nomePublico ;
     @Column(name="email", nullable = false, unique = true)
     private String email;
     @Enumerated(EnumType.STRING)
@@ -56,6 +58,9 @@ public class Usuario implements UserDetails {
     private String linkedin;
     @Column(name = "bio")
     private String bio;
+    @Column(name = "usuario_anonimo" , nullable = true)
+    private Boolean isAnonimo;
+
 
 
 

@@ -5,6 +5,9 @@ import jakarta.validation.constraints.Size;
 import org.hibernate.validator.constraints.URL;
 
 public record AtualizarDadosPerfilDTO(
+        String nomePublico,
+
+        Boolean isAnonimo,
 
         @Size(max = 100, message = "A profissão deve ter no máximo 100 caracteres.")
         String profissao,

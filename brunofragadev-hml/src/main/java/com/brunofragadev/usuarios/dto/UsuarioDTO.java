@@ -6,6 +6,8 @@ public record UsuarioDTO(
         Long id,
         String nome,
         String userName,
+        String nomePublico,
+        Boolean isAnonimo,
         String email,
         Role role,
         Boolean contaAtiva,

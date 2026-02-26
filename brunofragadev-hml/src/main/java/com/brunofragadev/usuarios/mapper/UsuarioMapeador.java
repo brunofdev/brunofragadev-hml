@@ -16,6 +16,7 @@ public class UsuarioMapeador {
         usuario.setSenha(dto.senha());
         usuario.setEmail(dto.email());
         usuario.setUserName(dto.userName());
+        usuario.setNomePublico(dto.nomePublico());
         return usuario;
     }
     public UsuarioDTO mapearUsuarioParaUsuarioDTO(Usuario novoUsuario) {
@@ -23,6 +24,8 @@ public class UsuarioMapeador {
                 novoUsuario.getId(),
                 novoUsuario.getNome(),
                 novoUsuario.getUsername(),
+                novoUsuario.getNomePublico(),
+                novoUsuario.getIsAnonimo(),
                 novoUsuario.getEmail(),
                 novoUsuario.getRole(),
                 novoUsuario.isContaAtiva(),
@@ -49,6 +52,8 @@ public class UsuarioMapeador {
         usuario.setFotoperfil(novosDados.fotoPerfil());
         usuario.setTelefone(novosDados.telefone());
         usuario.setBio(novosDados.bio());
+        usuario.setNomePublico(novosDados.nomePublico());
+        usuario.setIsAnonimo(novosDados.isAnonimo());
         return usuario;
     };
 }

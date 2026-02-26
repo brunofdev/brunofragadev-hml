@@ -10,7 +10,7 @@ import java.util.List;
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping("/public/projetos")
+@RequestMapping("/projetos/publicos")
 public class ProjetoPublicoController {
 
     private final ProjetoService service;

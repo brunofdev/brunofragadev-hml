@@ -24,6 +24,8 @@ public record CadastrarUsuarioDTO(
     @Pattern(regexp = "\\S+", message = "O nome de usuário não pode conter espaços em branco.")
     String userName,
 
+    String nomePublico,
+
     @Schema(description = "Senha forte (min 8 chars, 1 maiúscula, 1 minúscula, 1 número, 1 especial)", example = "Senha@123")
     @NotBlank(message = "A senha não pode estar em branco.")
     @Size(min = 8, message = "A senha deve ter no mínimo 8 caracteres.")
@@ -44,6 +46,8 @@ public record CadastrarUsuarioDTO(
 
 
                     this.userName().toUpperCase(),
+
+                    this.nomePublico,
 
                     senhaCriptografada
 

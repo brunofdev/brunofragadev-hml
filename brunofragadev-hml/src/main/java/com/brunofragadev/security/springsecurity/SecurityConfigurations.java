@@ -16,6 +16,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import static java.util.Map.entry;
 
 import java.util.Arrays;
 import java.util.List;
@@ -42,23 +43,37 @@ public class SecurityConfigurations {
             "/usuario/senha/recuperacao",
             "/usuario/senha/recuperacao/validar-codigo",
             "/usuario/senha/recuperacao/alterar-senha",
-            "/feedback/listar-todos",
-            "/public/projetos/**"
+            "/projetos/publicos",
+            "/feedback/geral/listar-todos",
+            "/feedback/projetos/listar-todos/**"
 
             //>>>>>>>>>>>>>LIBERADO PUBLICAMENTE PARA TESTES APENAS<<<<<<<<<<<
     };
     //ROTAS PROTEGIDAS
-    private static final Map<String, Role> PROTECTED_ROUTES = Map.of(
-            // Apenas USER (e roles superiores, dependendo da sua lógica)
-            "/usuario/meus-dados", Role.USER,
-            "/usuario/meus-dados/atualizar", Role.USER,
-            "/feedback/criar", Role.USER,
+    private static final Map<String, Role> PROTECTED_ROUTES = Map.ofEntries(
+            // =========================================
+            // USUÁRIO COMUM (Apenas USER ou superior)
+            // =========================================
+            entry("/usuario/meus-dados", Role.USER),
+            entry("/usuario/meus-dados/atualizar", Role.USER),
 
-            // Apenas ADMIN3 (Protege a listagem e criação)
-            "/paineladm/projetos", Role.ADMIN3,
+            // =========================================
+            // FEEDBACKS (Geral e Projetos)
+            // Libera a leitura (GET), mas protege as ações
+            // =========================================
+            entry("/feedback/geral/criar", Role.USER),
+            entry("/feedback/geral/atualizar/**", Role.USER),
+            entry("/feedback/geral/excluir/**", Role.USER),
 
-            // Protege as rotas dinâmicas (ex: /paineladm/projetos/1 para PUT, GET por ID e DELETE)
-            "/paineladm/projetos/**", Role.ADMIN3
+            entry("/feedback/projetos/criar", Role.USER),
+            entry("/feedback/projetos/atualizar/**", Role.USER),
+            entry("/feedback/projetos/excluir/**", Role.USER),
+
+            // =========================================
+            // ADMINISTRAÇÃO (Apenas ADMIN3)
+            // =========================================
+            entry("/paineladm/projetos", Role.ADMIN3),
+            entry("/paineladm/projetos/**", Role.ADMIN3)
     );
 
     @Bean
