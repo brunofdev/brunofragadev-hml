@@ -33,6 +33,7 @@ public class SecurityConfigurations {
     private static final String[] PUBLIC_ENDPOINTS = {
             "/api/auth/cliente-login",
             "/auth/login",
+            "/auth/login/google",
             "/v3/api-docs/**",
             "/swagger-ui/**",
             "/swagger-ui.html",
@@ -46,6 +47,7 @@ public class SecurityConfigurations {
             "/projetos/publicos",
             "/feedback/geral/listar-todos",
             "/feedback/projetos/listar-todos/**"
+
 
             //>>>>>>>>>>>>>LIBERADO PUBLICAMENTE PARA TESTES APENAS<<<<<<<<<<<
     };

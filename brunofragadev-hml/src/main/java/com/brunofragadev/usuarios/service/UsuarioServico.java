@@ -20,7 +20,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
+import java.util.UUID;
 
 @Service
 public class UsuarioServico {
@@ -144,6 +146,31 @@ public class UsuarioServico {
         usuario.setCodigoVerificacao(null);
         usuarioRepositorio.save(usuario);
         servicoDeEmail.enviarEmailSenhaAlteradaComSucesso(usuario.getEmail(), usuario.getUsername());
+    }
+    @Transactional
+    public UsuarioDTO processarLoginGoogle(String email, String nome, String fotoUrl) {
+        String emailFormatado = email.toUpperCase();
+        Optional<Usuario> usuarioExistente = usuarioRepositorio.findByEmail(emailFormatado);
+        if (usuarioExistente.isPresent()) {
+            Usuario usuario = usuarioExistente.get();
+            if (fotoUrl != null && !fotoUrl.equals(usuario.getFotoperfil())) {
+                usuario.setFotoperfil(fotoUrl);
+            }
+            return usuarioMapeador.mapearUsuarioParaUsuarioDTO(usuario);
+        }
+        String userNameFinal = email.split("@")[0].toUpperCase();
+        if (existePorNomeUsuario(userNameFinal)) {
+            userNameFinal = userNameFinal + "_" + UUID.randomUUID().toString().substring(0, 4).toUpperCase();
+        }
+        String senhaCriptografada = codificadorSenha.encode(UUID.randomUUID().toString());
+
+        Usuario novoUsuario = usuarioMapeador.mapearNovoUsuarioSocialGoogle(
+                emailFormatado, nome, fotoUrl, senhaCriptografada, userNameFinal
+        );
+        usuarioRepositorio.save(novoUsuario);
+        UsuarioDTO novoUsuarioDTO = usuarioMapeador.mapearUsuarioParaUsuarioDTO(novoUsuario);
+        servicoDeEmail.enviarEmailDeBoasVindas(novoUsuarioDTO);
+        return novoUsuarioDTO;
     }
 }
 

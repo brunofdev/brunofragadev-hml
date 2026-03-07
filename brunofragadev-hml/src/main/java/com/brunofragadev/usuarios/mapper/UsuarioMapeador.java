@@ -1,12 +1,14 @@
 package com.brunofragadev.usuarios.mapper;
 
 import com.brunofragadev.usuarios.dto.entrada.AtualizarDadosPerfilDTO;
+import com.brunofragadev.usuarios.entity.Role;
 import com.brunofragadev.usuarios.entity.Usuario;
 import com.brunofragadev.usuarios.dto.entrada.CadastrarUsuarioDTO;
 import com.brunofragadev.usuarios.dto.saida.UsuarioDTO;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.UUID;
 
 @Component
 public class UsuarioMapeador {
@@ -18,6 +20,18 @@ public class UsuarioMapeador {
         usuario.setUserName(dto.userName());
         usuario.setNomePublico(dto.nomePublico());
         return usuario;
+    }
+
+    public Usuario mapearNovoUsuarioSocialGoogle(String emailFormatado, String nome, String fotoUrl, String senhaCriptografada, String userNameFinal){
+        Usuario novoUsuario = new Usuario();
+        novoUsuario.setEmail(emailFormatado);
+        novoUsuario.setNome(nome);
+        novoUsuario.setUserName(userNameFinal);
+        novoUsuario.setFotoperfil(fotoUrl);
+        novoUsuario.setSenha(senhaCriptografada);
+        novoUsuario.setContaAtiva(true);
+        novoUsuario.setRole(Role.USER);
+        return novoUsuario;
     }
     public UsuarioDTO mapearUsuarioParaUsuarioDTO(Usuario novoUsuario) {
         return new UsuarioDTO(

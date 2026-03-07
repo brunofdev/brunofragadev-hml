@@ -46,10 +46,7 @@ public class ProjetoService {
     @Transactional
     public ProjetoResponseDTO atualizar(Long id, ProjetoRequestDTO dto) {
         Projeto projetoExistente = buscarEntidadePorId(id);
-
-        // O mapper atualiza a entidade existente com os dados novos do DTO
         mapper.toEntity(dto, projetoExistente);
-
         Projeto projetoAtualizado = repository.save(projetoExistente);
         return mapper.toDTO(projetoAtualizado);
     }
@@ -62,7 +59,7 @@ public class ProjetoService {
         repository.deleteById(id);
     }
 
-    // Método utilitário interno para evitar repetição de código
+    // Metodo utilitário interno para evitar repetição de código
     private Projeto buscarEntidadePorId(Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Projeto não encontrado com ID: " + id));

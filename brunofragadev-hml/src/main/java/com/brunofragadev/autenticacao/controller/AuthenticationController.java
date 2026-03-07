@@ -2,6 +2,7 @@ package com.brunofragadev.autenticacao.controller;
 
 
 
+import com.brunofragadev.autenticacao.dto.AuthSocialGoogleDTO;
 import com.brunofragadev.autenticacao.dto.UsuarioLoginResponseDTO;
 import com.brunofragadev.autenticacao.dto.CredenciaisDTO;
 import com.brunofragadev.autenticacao.service.AuthenticationService;
@@ -26,6 +27,11 @@ public class AuthenticationController {
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<UsuarioLoginResponseDTO>> loginCliente(@Valid @RequestBody CredenciaisDTO credentialsDTO) {
         UsuarioLoginResponseDTO loginResult = authenticationService.loginCliente(credentialsDTO);
+        return ResponseEntity.ok(ApiResponse.success("Usuário autenticado com sucesso", loginResult));
+    }
+    @PostMapping("/login/google")
+    public ResponseEntity<ApiResponse<UsuarioLoginResponseDTO>> loginSocial(@Valid @RequestBody AuthSocialGoogleDTO tokenGoogle) {
+        UsuarioLoginResponseDTO loginResult = authenticationService.loginGoogle(tokenGoogle);
         return ResponseEntity.ok(ApiResponse.success("Usuário autenticado com sucesso", loginResult));
     }
     @GetMapping("/validar-admin")

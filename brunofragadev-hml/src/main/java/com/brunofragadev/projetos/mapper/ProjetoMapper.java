@@ -47,8 +47,6 @@ public class ProjetoMapper {
             }
             projeto.setSetup(setup);
         }
-
-        // Mapeando Galeria
         if (dto.galeria() != null) {
             List<ImagemProjeto> imagens = dto.galeria().stream().map(imgDto -> {
                 ImagemProjeto img = new ImagemProjeto();
