@@ -48,11 +48,8 @@ public class UsuarioServico {
         usuarioValidador.validarNovoUsuario(dto, false);
         String senhaCriptografada = codificadorSenha.encode(dto.senha());
         Usuario usuario = usuarioMapeador.mapearNovoUsuario(dto, senhaCriptografada);
-        usuario.setRole(Role.USER);
-        usuario.setContaAtiva(false);
         String codigoGerado = gerarCodigoVerificacao();
-        usuario.setCodigoVerificacao(codigoGerado);
-        usuario.setExpiracaoCodigo(LocalDateTime.now().plusMinutes(5));
+        usuario.definirCodigoVerificacao(codigoGerado, LocalDateTime.now().plusMinutes(5));
         usuarioRepositorio.save(usuario);
         UsuarioDTO novoUsuario = usuarioMapeador.mapearUsuarioParaUsuarioDTO(usuario);
         servicoDeEmail.enviarEmailDeVerificacao(novoUsuario.email(), novoUsuario.userName(), usuario.getCodigoVerificacao());
@@ -78,8 +75,7 @@ public class UsuarioServico {
     public void gerarNovoCodigo (String userName){
         Usuario usuario = buscarUsuarioPorUserName(userName.toUpperCase());
         String codigoGerado = gerarCodigoVerificacao();
-        usuario.setCodigoVerificacao(codigoGerado);
-        usuario.setExpiracaoCodigo(LocalDateTime.now().plusMinutes(5));
+        usuario.definirCodigoVerificacao(codigoGerado, LocalDateTime.now().plusMinutes(5));
         usuarioRepositorio.save(usuario);
         servicoDeEmail.enviarEmailDeVerificacao(usuario.getEmail(), usuario.getUsername(), usuario.getCodigoVerificacao());
     }
@@ -88,8 +84,7 @@ public class UsuarioServico {
     public UsuarioDTO autenticarContaAtiva(ValidarUsuarioDTO dto){
         Usuario usuario = buscarPorUserNameOuEmail(dto.userName().toUpperCase(), dto.userName().toUpperCase());
         validarCodigo(usuario, dto.codigo());
-        usuario.setContaAtiva(true);
-        usuario.setCodigoVerificacao(null);
+        usuario.ativarConta();
         usuarioRepositorio.save(usuario);
         UsuarioDTO usuarioDTO = usuarioMapeador.mapearUsuarioParaUsuarioDTO(usuario);
         servicoDeEmail.enviarEmailDeBoasVindas(usuarioDTO);
@@ -125,8 +120,7 @@ public class UsuarioServico {
     public UsuarioRecuperacaoSenhaDTO enviarCodigoRecuperacaoSenhaPorEmail (String userNameOuEmail){
         Usuario usuario = buscarPorUserNameOuEmail(userNameOuEmail.toUpperCase(), userNameOuEmail.toUpperCase());
         String novoCodigo = gerarCodigoVerificacao();
-        usuario.setCodigoVerificacao(novoCodigo);
-        usuario.setExpiracaoCodigo(LocalDateTime.now().plusMinutes(5));
+        usuario.definirCodigoVerificacao(novoCodigo, LocalDateTime.now().plusMinutes(5));
         usuarioRepositorio.save(usuario);
         servicoDeEmail.enviarEmailDeRecuperacaoDeSenha(usuario.getEmail(), usuario.getUsername(), novoCodigo);
         return new UsuarioRecuperacaoSenhaDTO(FormatadoresUteis.ofuscarEmail(usuario.getEmail()));
@@ -141,8 +135,7 @@ public class UsuarioServico {
         Usuario usuario = buscarPorUserNameOuEmail(dto.userName().toUpperCase(), dto.userName().toUpperCase());
         validarCodigo(usuario, dto.codigoVerificado());
         String senhaNovaCriptografada = codificadorSenha.encode(dto.novaSenha());
-        usuario.setSenha(senhaNovaCriptografada);
-        usuario.setCodigoVerificacao(null);
+        usuario.alterarSenha(senhaNovaCriptografada);
         usuarioRepositorio.save(usuario);
         servicoDeEmail.enviarEmailSenhaAlteradaComSucesso(usuario.getEmail(), usuario.getUsername());
     }
@@ -163,7 +156,7 @@ public class UsuarioServico {
                 usuario.setFotoperfil(fotoUrl);
             }
             if(!usuario.isContaAtiva()){
-                usuario.setContaAtiva(true);
+                usuario.ativarConta();
             }
             return usuarioMapeador.mapearUsuarioParaUsuarioDTO(usuario);
         }

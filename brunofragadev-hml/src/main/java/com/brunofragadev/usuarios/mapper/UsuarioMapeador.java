@@ -14,26 +14,28 @@ import java.util.List;
 @Component
 public class UsuarioMapeador {
     public Usuario mapearNovoUsuario(CadastrarUsuarioDTO dto, String senhaCriptografada) {
-        Usuario usuario = new Usuario();
-        usuario.setNome(dto.nome());
-        usuario.setSenha(senhaCriptografada);
-        usuario.setEmail(dto.email().toUpperCase());
-        usuario.setUserName(dto.userName().toUpperCase());
-        usuario.setNomePublico(dto.nomePublico());
-        return usuario;
+        return Usuario.criar(
+                dto.nome(),
+                dto.userName(),
+                dto.email(),
+                senhaCriptografada,
+                dto.nomePublico()
+        );
     }
 
-    public Usuario mapearNovoUsuarioSocialGoogle(String emailFormatado, String nome, String fotoUrl, String senhaCriptografada, String userNameFinal){
-        Usuario novoUsuario = new Usuario();
-        novoUsuario.setEmail(emailFormatado);
-        novoUsuario.setNome(nome);
-        novoUsuario.setUserName(userNameFinal);
-        novoUsuario.setFotoperfil(fotoUrl);
-        novoUsuario.setSenha(senhaCriptografada);
-        novoUsuario.setContaAtiva(true);
-        novoUsuario.setRole(Role.USER);
-        return novoUsuario;
+    public Usuario mapearNovoUsuarioSocialGoogle(String emailFormatado,
+                                                 String nome,
+                                                 String fotoUrl,
+                                                 String senhaCriptografada,
+                                                 String userNameFinal) {
+        return Usuario.criarViaGoogle(
+                nome,
+                userNameFinal,
+                emailFormatado,
+                senhaCriptografada,
+                fotoUrl);
     }
+
     public UsuarioDTO mapearUsuarioParaUsuarioDTO(@NonNull Usuario novoUsuario) {
         return new UsuarioDTO(
                 novoUsuario.getId(),
@@ -68,7 +70,7 @@ public class UsuarioMapeador {
         usuario.setTelefone(novosDados.telefone());
         usuario.setBio(novosDados.bio());
         usuario.setNomePublico(novosDados.nomePublico());
-        usuario.setIsAnonimo(novosDados.isAnonimo());
+        usuario.setAnonimo(novosDados.isAnonimo());
         return usuario;
     };
 }
