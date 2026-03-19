@@ -38,30 +38,4 @@ public record CadastrarUsuarioDTO(
 
 ) {
 
-    public CadastrarUsuarioDTO withSenha(String senhaCriptografada) {
-
-        return new CadastrarUsuarioDTO(
-
-                this.nome(),
-
-                this.email().toUpperCase(),
-
-                this.userName().toUpperCase(),
-
-                this.nomePublico,
-
-                senhaCriptografada
-
-        );
-
-    }
-
-    @Override
-
-    public String toString() {
-
-        return "CadastrarUsuarioDTO[nome=" + nome + ", email=" + email + ", senha= ***** ]";
-
-    }
-
 }

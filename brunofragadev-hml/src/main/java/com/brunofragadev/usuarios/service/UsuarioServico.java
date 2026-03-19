@@ -18,10 +18,10 @@ import jakarta.transaction.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 import java.util.UUID;
 
 @Service
@@ -44,12 +44,13 @@ public class UsuarioServico {
         this.servicoDeEmail = servicoDeEmail;
     }
     @Transactional
-    public UsuarioDTO cadastrarUsuario(CadastrarUsuarioDTO dtoComSenhaCodificada) {
-        usuarioValidador.validarNovoUsuario(dtoComSenhaCodificada, false);
-        Usuario usuario = usuarioMapeador.mapearNovoUsuario(dtoComSenhaCodificada);
+    public UsuarioDTO cadastrarUsuario(CadastrarUsuarioDTO dto) {
+        usuarioValidador.validarNovoUsuario(dto, false);
+        String senhaCriptografada = codificadorSenha.encode(dto.senha());
+        Usuario usuario = usuarioMapeador.mapearNovoUsuario(dto, senhaCriptografada);
         usuario.setRole(Role.USER);
         usuario.setContaAtiva(false);
-        String codigoGerado = String.format("%06d", new Random().nextInt(999999));
+        String codigoGerado = gerarCodigoVerificacao();
         usuario.setCodigoVerificacao(codigoGerado);
         usuario.setExpiracaoCodigo(LocalDateTime.now().plusMinutes(5));
         usuarioRepositorio.save(usuario);
@@ -76,7 +77,7 @@ public class UsuarioServico {
     @Transactional
     public void gerarNovoCodigo (String userName){
         Usuario usuario = buscarUsuarioPorUserName(userName.toUpperCase());
-        String codigoGerado = String.format("%06d", new Random().nextInt(999999));
+        String codigoGerado = gerarCodigoVerificacao();
         usuario.setCodigoVerificacao(codigoGerado);
         usuario.setExpiracaoCodigo(LocalDateTime.now().plusMinutes(5));
         usuarioRepositorio.save(usuario);
@@ -123,14 +124,17 @@ public class UsuarioServico {
     private Usuario buscarPorUserNameOuEmail (String userName, String email){
         return usuarioRepositorio.findByUserNameOrEmail(userName, email).orElseThrow(() -> new UserDontHaveEmailRegistered("Email ou UserName não encontrado no sistema, por favor verifique as informações"));
     }
+    private String gerarCodigoVerificacao() {
+        return String.format("%06d", new SecureRandom().nextInt(1_000_000));
+    }
     @Transactional
     public UsuarioRecuperacaoSenhaDTO enviarCodigoRecuperacaoSenhaPorEmail (String userNameOuEmail){
         Usuario usuario = buscarPorUserNameOuEmail(userNameOuEmail.toUpperCase(), userNameOuEmail.toUpperCase());
-        String codigoGerado = String.format("%06d", new Random().nextInt(999999));
-        usuario.setCodigoVerificacao(codigoGerado);
+        String novoCodigo = gerarCodigoVerificacao();
+        usuario.setCodigoVerificacao(novoCodigo);
         usuario.setExpiracaoCodigo(LocalDateTime.now().plusMinutes(5));
         usuarioRepositorio.save(usuario);
-        servicoDeEmail.enviarEmailDeRecuperacaoDeSenha(usuario.getEmail(), usuario.getUsername(), codigoGerado);
+        servicoDeEmail.enviarEmailDeRecuperacaoDeSenha(usuario.getEmail(), usuario.getUsername(), novoCodigo);
         return new UsuarioRecuperacaoSenhaDTO(FormatadoresUteis.ofuscarEmail(usuario.getEmail()));
     }
     @Transactional
@@ -142,7 +146,8 @@ public class UsuarioServico {
     public void alterarSenhaUsuario (UsuarioAlteracaoSenhaDTO dto){
         Usuario usuario = buscarPorUserNameOuEmail(dto.userName().toUpperCase(), dto.userName().toUpperCase());
         validarCodigo(usuario, dto.codigoVerificado());
-        usuario.setSenha(dto.novaSenha());
+        String senhaNovaCriptografada = codificadorSenha.encode(dto.novaSenha());
+        usuario.setSenha(senhaNovaCriptografada);
         usuario.setCodigoVerificacao(null);
         usuarioRepositorio.save(usuario);
         servicoDeEmail.enviarEmailSenhaAlteradaComSucesso(usuario.getEmail(), usuario.getUsername());

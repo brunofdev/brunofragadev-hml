@@ -27,21 +27,18 @@ import java.util.List;
 @Validated
 public class UsuarioController {
 
+    private final UsuarioServico usuarioServico;
+    private final JwtProvider jwtProvider;
 
-    @Autowired
-    private UsuarioServico usuarioServico;
 
-    @Autowired
-    private JwtProvider jwtProvider;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    public UsuarioController (UsuarioServico usuarioServico, JwtProvider jwtProvider){
+        this.usuarioServico = usuarioServico;
+        this.jwtProvider = jwtProvider;
+    }
 
     @PostMapping("/cadastro")
     public ResponseEntity<ApiResponse<UsuarioDTO>> cadastrarUsuario(@Valid @RequestBody CadastrarUsuarioDTO dto){
-        String senhaCriptografada = passwordEncoder.encode(dto.senha());
-        CadastrarUsuarioDTO dtoComSenhaEncoded = dto.withSenha(senhaCriptografada);
-        UsuarioDTO usuarioCriadoDTO = usuarioServico.cadastrarUsuario(dtoComSenhaEncoded);
+        UsuarioDTO usuarioCriadoDTO = usuarioServico.cadastrarUsuario(dto);
         return ResponseEntity.ok(ApiResponse.success("Recurso criado" , usuarioCriadoDTO));
     }
     @GetMapping("/obter-todos")
@@ -77,9 +74,7 @@ public class UsuarioController {
     }
     @PostMapping("/senha/recuperacao/alterar-senha")
     public ResponseEntity<Void> alterarSenha(@RequestBody @Valid UsuarioAlteracaoSenhaDTO dto) {
-        String senhaCodificada = passwordEncoder.encode(dto.novaSenha());
-        UsuarioAlteracaoSenhaDTO dtoSenhaCodificada = dto.withNovaSenha(senhaCodificada);
-        usuarioServico.alterarSenhaUsuario(dtoSenhaCodificada);
+        usuarioServico.alterarSenhaUsuario(dto);
         return ResponseEntity.noContent().build();
     }
     @PatchMapping("/meus-dados/atualizar")

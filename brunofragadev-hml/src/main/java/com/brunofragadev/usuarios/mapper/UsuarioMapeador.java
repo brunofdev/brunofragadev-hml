@@ -5,17 +5,18 @@ import com.brunofragadev.usuarios.entity.Role;
 import com.brunofragadev.usuarios.entity.Usuario;
 import com.brunofragadev.usuarios.dto.entrada.CadastrarUsuarioDTO;
 import com.brunofragadev.usuarios.dto.saida.UsuarioDTO;
+import org.jspecify.annotations.NonNull;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.UUID;
+
 
 @Component
 public class UsuarioMapeador {
-    public Usuario mapearNovoUsuario(CadastrarUsuarioDTO dto) {
+    public Usuario mapearNovoUsuario(CadastrarUsuarioDTO dto, String senhaCriptografada) {
         Usuario usuario = new Usuario();
         usuario.setNome(dto.nome());
-        usuario.setSenha(dto.senha());
+        usuario.setSenha(senhaCriptografada);
         usuario.setEmail(dto.email());
         usuario.setUserName(dto.userName());
         usuario.setNomePublico(dto.nomePublico());
@@ -33,7 +34,7 @@ public class UsuarioMapeador {
         novoUsuario.setRole(Role.USER);
         return novoUsuario;
     }
-    public UsuarioDTO mapearUsuarioParaUsuarioDTO(Usuario novoUsuario) {
+    public UsuarioDTO mapearUsuarioParaUsuarioDTO(@NonNull Usuario novoUsuario) {
         return new UsuarioDTO(
                 novoUsuario.getId(),
                 novoUsuario.getNome(),
