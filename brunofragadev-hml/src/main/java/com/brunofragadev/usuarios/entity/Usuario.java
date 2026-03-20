@@ -3,11 +3,13 @@ package com.brunofragadev.usuarios.entity;
 import com.brunofragadev.usuarios.exceptions.VerificationCodeInvalidException;
 import com.brunofragadev.utils.utilitarios.CodigoVerificacao;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -19,47 +21,81 @@ import java.util.List;
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
 public class Usuario implements UserDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name="name", nullable = false)
+
+    @NotBlank
+    @Column(name = "name", nullable = false)
     private String nome;
-    @Column(name="user_name", nullable = false, unique = true)
+
+    @NotBlank
+    @Size(min = 3, max = 30)
+    @Column(name = "user_name", nullable = false, unique = true)
     private String userName;
-    @Column(name="senha", nullable = false)
+
+    @NotBlank
+    @Column(name = "senha", nullable = false)
     private String senha;
-    @Column(name="nome_publico", nullable = true)
-    private String nomePublico ;
-    @Column(name="email", nullable = false, unique = true)
+
+    @Size(min = 4, max = 30)
+    @Column(name = "nome_publico")
+    private String nomePublico;
+
+    @NotBlank
+    @Email
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
+
     @Enumerated(EnumType.STRING)
     private Role role;
+
     @Column(name = "conta_ativa", nullable = false)
     private boolean contaAtiva;
+
     @Column(name = "telefone")
     private String telefone;
+
     @Column(name = "profissao")
     private String profissao;
+
     @Column(name = "pais")
     private String pais;
+
     @Column(name = "cidade")
     private String cidade;
+
     @Column(name = "fotoperfil")
     private String fotoperfil;
+
     @Column(name = "github")
     private String github;
+
     @Column(name = "linkedin")
     private String linkedin;
+
     @Column(name = "bio")
     private String bio;
-    @Column(name = "usuario_anonimo" , nullable = true)
+
+    @Column(name = "usuario_anonimo")
     private Boolean isAnonimo;
+
     @Embedded
     private CodigoVerificacao codigoVerificacao;
 
+
+    /**
+     * Cria um novo usuário com conta inativa aguardando verificação.
+     * O email e userName são normalizados para uppercase automaticamente.
+     * A senha deve ser fornecida já criptografada.
+     *
+     * @throws IllegalArgumentException se qualquer campo obrigatório for nulo ou vazio
+     */
     public static Usuario criar(String nome, String userName,
                                 String email, String senhaCriptografada,
                                 String nomePublico) {
+        validarCamposObrigatorios(nome, userName, email, senhaCriptografada);
         Usuario u = new Usuario();
         u.nome = nome;
         u.userName = userName.toUpperCase();
@@ -70,31 +106,45 @@ public class Usuario implements UserDetails {
         u.contaAtiva = false;
         return u;
     }
+
+    /**
+     * Cria um novo usuário autenticado via Google com conta já ativa.
+     * O email e userName são normalizados para uppercase automaticamente.
+     * A senha deve ser fornecida já criptografada — gerada aleatoriamente pelo sistema.
+     *
+     * @throws IllegalArgumentException se qualquer campo obrigatório for nulo ou vazio
+     */
     public static Usuario criarViaGoogle(String nome, String userName,
                                          String email, String senhaCriptografada,
                                          String fotoUrl) {
+        validarCamposObrigatorios(nome, userName, email, senhaCriptografada);
         Usuario u = new Usuario();
         u.nome = nome;
-        u.userName = userName.toUpperCase(); // regra centralizada
-        u.email = email.toUpperCase();       // regra centralizada
+        u.userName = userName.toUpperCase();
+        u.email = email.toUpperCase();
         u.senha = senhaCriptografada;
         u.fotoperfil = fotoUrl;
         u.role = Role.USER;
-        u.contaAtiva = true;                 // Google já valida o email
+        u.contaAtiva = true;
         return u;
     }
 
-    public void ativarConta(){
+    public void ativarConta() {
         this.contaAtiva = true;
         this.codigoVerificacao = null;
     }
+
     public void definirCodigoVerificacao(String codigo, LocalDateTime expiracao) {
         this.codigoVerificacao = new CodigoVerificacao(codigo, expiracao);
     }
+
     public void alterarSenha(String senhaCriptografada) {
+        if (senhaCriptografada == null || senhaCriptografada.isBlank())
+            throw new IllegalArgumentException("Senha não pode ser vazia");
         this.senha = senhaCriptografada;
         this.codigoVerificacao = null;
     }
+
     public void validarCodigo(String tentativa) {
         if (this.codigoVerificacao == null)
             throw new VerificationCodeInvalidException("Nenhum código ativo");
@@ -103,6 +153,7 @@ public class Usuario implements UserDetails {
         if (!this.codigoVerificacao.corresponde(tentativa))
             throw new VerificationCodeInvalidException("Código inválido");
     }
+
     public void definirRole(Role role) {
         this.role = (role == null) ? Role.USER : role;
     }
@@ -112,7 +163,7 @@ public class Usuario implements UserDetails {
     }
 
     public void setUserName(String userName) {
-        this.userName = userName;
+        this.userName = (userName != null) ? userName.toUpperCase() : null;
     }
 
     public void setNomePublico(String nomePublico) {
@@ -120,11 +171,11 @@ public class Usuario implements UserDetails {
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.email = (email != null) ? email.toUpperCase() : null;
     }
 
     public void setAnonimo(Boolean anonimo) {
-        isAnonimo = anonimo;
+        this.isAnonimo = anonimo;
     }
 
     public void setBio(String bio) {
@@ -159,36 +210,48 @@ public class Usuario implements UserDetails {
         this.telefone = telefone;
     }
 
-    public Role getRole(){
+    public Role getRole() {
         return (this.role == null) ? Role.USER : this.role;
     }
+
+
+    private static void validarCamposObrigatorios(String nome, String userName,
+                                                  String email, String senha) {
+        if (nome == null || nome.isBlank())
+            throw new IllegalArgumentException("Nome não pode ser vazio");
+        if (userName == null || userName.isBlank())
+            throw new IllegalArgumentException("Username não pode ser vazio");
+        if (email == null || email.isBlank())
+            throw new IllegalArgumentException("Email não pode ser vazio");
+        if (senha == null || senha.isBlank())
+            throw new IllegalArgumentException("Senha não pode ser vazia");
+    }
+
+    // -------------------------------------------------------------------------
+    // Spring Security — UserDetails
+    // -------------------------------------------------------------------------
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if (this.role == null) return List.of(new SimpleGrantedAuthority("ROLE_USER"));
-        switch (this.role) {
-            case ADMIN3:
-                return List.of(
-                        new SimpleGrantedAuthority("ROLE_ADMIN3"),
-                        new SimpleGrantedAuthority("ROLE_ADMIN2"),
-                        new SimpleGrantedAuthority("ROLE_ADMIN1"),
-                        new SimpleGrantedAuthority("ROLE_USER")
-                );
-            case ADMIN2:
-                return List.of(
-                        new SimpleGrantedAuthority("ROLE_ADMIN2"),
-                        new SimpleGrantedAuthority("ROLE_ADMIN1"),
-                        new SimpleGrantedAuthority("ROLE_USER")
-                );
-
-            case ADMIN1:
-                return List.of(
-                        new SimpleGrantedAuthority("ROLE_ADMIN1"),
-                        new SimpleGrantedAuthority("ROLE_USER")
-                );
-            default:
-                return List.of(new SimpleGrantedAuthority("ROLE_USER"));
-        }
+        return switch (this.role) {
+            case ADMIN3 -> List.of(
+                    new SimpleGrantedAuthority("ROLE_ADMIN3"),
+                    new SimpleGrantedAuthority("ROLE_ADMIN2"),
+                    new SimpleGrantedAuthority("ROLE_ADMIN1"),
+                    new SimpleGrantedAuthority("ROLE_USER")
+            );
+            case ADMIN2 -> List.of(
+                    new SimpleGrantedAuthority("ROLE_ADMIN2"),
+                    new SimpleGrantedAuthority("ROLE_ADMIN1"),
+                    new SimpleGrantedAuthority("ROLE_USER")
+            );
+            case ADMIN1 -> List.of(
+                    new SimpleGrantedAuthority("ROLE_ADMIN1"),
+                    new SimpleGrantedAuthority("ROLE_USER")
+            );
+            default -> List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        };
     }
 
     @Override
@@ -221,4 +284,3 @@ public class Usuario implements UserDetails {
         return this.contaAtiva;
     }
 }
-

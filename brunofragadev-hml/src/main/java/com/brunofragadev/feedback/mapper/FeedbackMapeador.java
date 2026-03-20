@@ -13,13 +13,13 @@ import java.util.List;
 public class FeedbackMapeador {
 
     public Feedback mapearFeedbackCriacao(CriarFeedbackDTO dto, Usuario usuario){
-        Feedback feedback = new Feedback();
-        feedback.setUsuario(usuario);
-        feedback.setDescricao(dto.descricao());
-        feedback.setAvaliacao(dto.avaliacao());
-        feedback.setTipoFeedback(dto.tipoFeedback());
-        feedback.setReferenciaId(dto.referenciaId());
-        return feedback;
+        return Feedback.criar(
+                usuario,
+                dto.descricao(),
+                dto.avaliacao(),
+                dto.tipoFeedback(),
+                dto.referenciaId()
+        );
     }
     //VERIFICAR, POIS EXISTE UM CONSULTA NO REPOSITORIO QUE RETORNA UM DTO DIRETAMENTE,
     // NO UNICO CASO DE USO ATE O MOMENTO
@@ -31,11 +31,10 @@ public class FeedbackMapeador {
                 feedback.getDescricao(),
                 feedback.getAvaliacao(),
                 feedback.getDataCriacao(),
-                "", // POR ISSO A STRING VAZIA AQUI, ESTE METODO NAO ESTA SENDO UTILIZADO
+                feedback.getUsuario().getFotoperfil(),
                 feedback.getTipoFeedback(),
                 feedback.getReferenciaId(),
-                false
-
+                feedback.getUsuario().getIsAnonimo()
         );
     }
     public List<FeedbackDTO> mapearListaDeFeedbacks(List<Feedback> feedbacks){
