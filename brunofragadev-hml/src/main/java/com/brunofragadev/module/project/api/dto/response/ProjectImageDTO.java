@@ -1,4 +1,4 @@
-package com.brunofragadev.module.project.dto.response;
+package com.brunofragadev.module.project.api.dto.response;
 
 public record ProjectImageDTO(
         Long id,

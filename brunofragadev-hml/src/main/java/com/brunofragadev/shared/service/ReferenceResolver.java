@@ -1,8 +1,8 @@
 package com.brunofragadev.shared.service;
 
 import com.brunofragadev.module.feedback.domain.entity.FeedbackType;
-import com.brunofragadev.module.project.entity.Project;
-import com.brunofragadev.module.project.repository.ProjectRepository;
+import com.brunofragadev.module.project.domain.entity.Project;
+import com.brunofragadev.module.project.domain.repository.ProjectRepository;
 import org.springframework.stereotype.Service;
 
 @Service

@@ -1,4 +1,4 @@
-package com.brunofragadev.module.project.dto.response;
+package com.brunofragadev.module.project.api.dto.response;
 
 public record SetupStepDTO(
         Integer num, String text, String cmd

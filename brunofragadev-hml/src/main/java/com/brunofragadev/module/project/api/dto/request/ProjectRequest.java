@@ -1,8 +1,8 @@
-package com.brunofragadev.module.project.dto.request;
+package com.brunofragadev.module.project.api.dto.request;
 
-import com.brunofragadev.module.project.dto.response.ProjectImageDTO;
-import com.brunofragadev.module.project.dto.response.ProjectSetupDTO;
-import com.brunofragadev.module.project.dto.response.TechnicalSheetDTO;
+import com.brunofragadev.module.project.api.dto.response.ProjectImageDTO;
+import com.brunofragadev.module.project.api.dto.response.ProjectSetupDTO;
+import com.brunofragadev.module.project.api.dto.response.TechnicalSheetDTO;
 
 import java.util.List;
 

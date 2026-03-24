@@ -1,4 +1,4 @@
-package com.brunofragadev.module.user.infrastructure.validator;
+package com.brunofragadev.module.user.domain.validator;
 
 import com.brunofragadev.module.user.api.dto.request.UpdateProfileData;
 import com.brunofragadev.module.user.api.dto.request.UserRegistrationRequest;

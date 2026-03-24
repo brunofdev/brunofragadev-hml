@@ -1,4 +1,4 @@
-package com.brunofragadev.module.project.entity;
+package com.brunofragadev.module.project.domain.entity;
 
 import com.brunofragadev.shared.domain.Auditable;
 import jakarta.persistence.*;
