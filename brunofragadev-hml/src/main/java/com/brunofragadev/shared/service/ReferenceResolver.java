@@ -1,26 +1,26 @@
 package com.brunofragadev.shared.service;
 
-import com.brunofragadev.core.feedback.entity.TipoFeedback;
-import com.brunofragadev.core.project.entity.Projeto;
-import com.brunofragadev.core.project.repository.ProjetoRepository;
+import com.brunofragadev.module.feedback.entity.FeedbackType;
+import com.brunofragadev.module.project.entity.Project;
+import com.brunofragadev.module.project.repository.ProjectRepository;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ReferenceResolver {
 
-    private final ProjetoRepository projetoRepository;
+    private final ProjectRepository projectRepository;
 
-    public ReferenceResolver(ProjetoRepository projetoRepository){
-        this.projetoRepository = projetoRepository;
+    public ReferenceResolver(ProjectRepository projectRepository){
+        this.projectRepository = projectRepository;
     }
 
-    public String resolverNome(TipoFeedback tipo, Long referenciaId) {
-        if (tipo == TipoFeedback.GERAL || referenciaId == null) {
+    public String resolverNome(FeedbackType tipo, Long referenciaId) {
+        if (tipo == FeedbackType.GERAL || referenciaId == null) {
             return "Página geral";
         }
-        if (tipo == TipoFeedback.PROJETO) {
-            return "Postado no projeto: " + projetoRepository.findById(referenciaId)
-                    .map(Projeto::getTitle)
+        if (tipo == FeedbackType.PROJETO) {
+            return "Postado no projeto: " + projectRepository.findById(referenciaId)
+                    .map(Project::getTitle)
                     .orElse("Projeto não encontrado");
         }
         return "Referência desconhecida";

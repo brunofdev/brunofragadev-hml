@@ -1,6 +1,6 @@
 package com.brunofragadev.infrastructure.handler;
 
-import com.brunofragadev.core.user.exception.*;
+import com.brunofragadev.module.user.domain.exception.*;
 // import com.brunofragadev.suas.outras.excecoes.aqui;
 
 import org.slf4j.Logger;
@@ -46,8 +46,7 @@ public class GlobalExceptionHandler {
     // Exceções de Busca (Ex: Registro não existe no banco) - Status 404
     @ExceptionHandler({
             UserNotFoundException.class,
-            UserDontFoundException.class,
-            UserDontHaveEmailRegistered.class
+            UserEmailNotRegisteredException.class
 
     })
     public ResponseEntity<Map<String, Object>> handleNotFoundExceptions(RuntimeException ex) {
