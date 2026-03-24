@@ -1,4 +1,4 @@
-# Bruno Dev API - Backend Portfolio
+# Backend Portfolio da minha Aplicação web brunofragadev.com
 
 Esta é a API RESTful desenvolvida para gerenciar o backend de um portfólio profissional, sistema de feedbacks e autenticação de usuários. O projeto foi arquitetado com um forte foco em engenharia de software moderna, priorizando a manutenibilidade, testabilidade e o baixo acoplamento.
 
