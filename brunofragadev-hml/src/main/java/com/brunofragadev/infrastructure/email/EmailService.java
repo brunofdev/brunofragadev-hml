@@ -1,6 +1,6 @@
 package com.brunofragadev.infrastructure.email;
 
-import com.brunofragadev.module.feedback.dto.response.FeedbackDTO;
+import com.brunofragadev.module.feedback.api.dto.response.FeedbackDTO;
 import com.brunofragadev.module.user.api.dto.response.UserDTO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;

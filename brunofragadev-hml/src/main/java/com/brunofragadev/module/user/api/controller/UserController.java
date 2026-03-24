@@ -1,6 +1,6 @@
 package com.brunofragadev.module.user.api.controller;
 
-import com.brunofragadev.module.auth.dto.UserLoginResponse;
+import com.brunofragadev.module.auth.api.dto.UserLoginResponse;
 import com.brunofragadev.module.user.api.dto.response.UserDTO;
 import com.brunofragadev.module.user.domain.entity.User;
 import com.brunofragadev.infrastructure.config.JwtProvider;

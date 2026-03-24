@@ -1,7 +1,7 @@
 package com.brunofragadev.infrastructure.security;
 
 
-import com.brunofragadev.module.auth.service.AuthorizationService;
+import com.brunofragadev.module.auth.application.usecase.AuthorizationService;
 import com.brunofragadev.infrastructure.config.JwtProvider;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

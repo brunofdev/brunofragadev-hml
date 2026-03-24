@@ -1,13 +1,11 @@
-package com.brunofragadev.module.user.domain.repository;
+package com.brunofragadev.module.user.infrastructure.persistence;
 
 import com.brunofragadev.module.user.domain.entity.User;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
 import java.util.Optional;
 
-public interface UserRepository {
-    User save(User user);
-    List<User> findAll();
+public interface SpringDataUserRepository extends JpaRepository<User, Long> {
     boolean existsByEmail(String email);
     boolean existsByUserName(String userName);
     Optional<User> findByUserName(String userName);
