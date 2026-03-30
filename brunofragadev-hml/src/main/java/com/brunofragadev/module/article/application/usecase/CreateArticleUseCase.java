@@ -1,9 +1,11 @@
-package com.brunofragadev.module.article.application;
+package com.brunofragadev.module.article.application.usecase;
 
-import com.brunofragadev.module.article.api.ArticleRequest;
-import com.brunofragadev.module.article.api.ArticleResponse;
-import com.brunofragadev.module.article.domain.Article;
-import com.brunofragadev.module.article.domain.ArticleRepository;
+import com.brunofragadev.module.article.api.dto.request.ArticleRequest;
+import com.brunofragadev.module.article.api.dto.response.ArticleResponse;
+import com.brunofragadev.module.article.application.mapper.ArticleMapper;
+import com.brunofragadev.module.article.domain.entity.Article;
+import com.brunofragadev.module.article.domain.exception.SlugAlreadyInUseException;
+import com.brunofragadev.module.article.domain.repository.ArticleRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,7 +31,7 @@ public class CreateArticleUseCase {
 
     private void validateSlugUniqueness(String slug) {
         if (articleRepository.existsBySlug(slug)) {
-            throw new IllegalArgumentException("O slug '" + slug + "' já está em uso por outro artigo.");
+            throw new SlugAlreadyInUseException("O slug '" + slug + "' já está em uso por outro artigo.");
         }
     }
 }

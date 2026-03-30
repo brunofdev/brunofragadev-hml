@@ -1,9 +1,9 @@
-package com.brunofragadev.module.article.infrastructure;
+package com.brunofragadev.module.article.infrastructure.persistence;
 
 
-import com.brunofragadev.module.article.domain.Article;
-import com.brunofragadev.module.article.domain.ArticleRepository;
-import com.brunofragadev.module.article.domain.ArticleStatus;
+import com.brunofragadev.module.article.domain.entity.Article;
+import com.brunofragadev.module.article.domain.repository.ArticleRepository;
+import com.brunofragadev.module.article.domain.entity.ArticleStatus;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -34,5 +34,9 @@ public class ArticleRepositoryAdapter implements ArticleRepository {
     @Override
     public List<Article> findAll() {
         return repository.findAll();
+    }
+    @Override
+    public Optional<Article> findById(Long id) {
+        return repository.findById(id);
     }
 }

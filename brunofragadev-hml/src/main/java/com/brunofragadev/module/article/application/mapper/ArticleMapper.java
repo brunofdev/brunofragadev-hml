@@ -1,8 +1,8 @@
-package com.brunofragadev.module.article.application;
+package com.brunofragadev.module.article.application.mapper;
 
-import com.brunofragadev.module.article.api.ArticleRequest;
-import com.brunofragadev.module.article.api.ArticleResponse;
-import com.brunofragadev.module.article.domain.Article;
+import com.brunofragadev.module.article.api.dto.request.ArticleRequest;
+import com.brunofragadev.module.article.api.dto.response.ArticleResponse;
+import com.brunofragadev.module.article.domain.entity.Article;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

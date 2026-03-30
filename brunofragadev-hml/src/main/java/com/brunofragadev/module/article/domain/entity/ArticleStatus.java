@@ -1,4 +1,4 @@
-package com.brunofragadev.module.article.domain;
+package com.brunofragadev.module.article.domain.entity;
 
 public enum ArticleStatus {
     RASCUNHO,

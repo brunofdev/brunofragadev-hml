@@ -1,4 +1,4 @@
-package com.brunofragadev.module.article.domain;
+package com.brunofragadev.module.article.domain.entity;
 
 import com.brunofragadev.shared.domain.Auditable;
 import jakarta.persistence.*;
@@ -74,8 +74,7 @@ public class Article extends Auditable {
         article.contentHtml = contentHtml;
         article.contentJson = contentJson;
         article.tags = (tags != null) ? tags : new HashSet<>();
-        article.status = ArticleStatus.RASCUNHO; // Sempre nasce como rascunho
-
+        article.status = ArticleStatus.RASCUNHO;
         return article;
     }
 
@@ -93,6 +92,26 @@ public class Article extends Auditable {
         if (this.status == ArticleStatus.PUBLICADO) return;
         this.status = ArticleStatus.PUBLICADO;
         this.publishedAt = LocalDateTime.now();
+    }
+    public void atualizar(String title, String subtitle, String slug, String coverImage,
+                          String fontFamily, String contentHtml, String contentJson,
+                          Set<String> tags, ArticleStatus status) {
+
+        validarDadosCriacao(title, slug, contentHtml, contentJson);
+
+        this.title = title;
+        this.subtitle = subtitle;
+        this.slug = slug;
+        this.coverImage = coverImage;
+        this.fontFamily = fontFamily;
+        this.contentHtml = contentHtml;
+        this.contentJson = contentJson;
+        this.tags = tags;
+        this.status = status;
+
+        if (status == ArticleStatus.PUBLICADO && this.publishedAt == null) {
+            this.publishedAt = LocalDateTime.now();
+        }
     }
 
 }

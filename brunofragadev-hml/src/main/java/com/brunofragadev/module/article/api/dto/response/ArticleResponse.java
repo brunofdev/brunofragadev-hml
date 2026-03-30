@@ -1,4 +1,4 @@
-package com.brunofragadev.module.article.api;
+package com.brunofragadev.module.article.api.dto.response;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import java.time.LocalDateTime;

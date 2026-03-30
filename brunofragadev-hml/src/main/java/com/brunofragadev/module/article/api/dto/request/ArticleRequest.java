@@ -1,4 +1,4 @@
-package com.brunofragadev.module.article.api;
+package com.brunofragadev.module.article.api.dto.request;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -38,6 +38,10 @@ public record ArticleRequest(
         @Schema(description = "Conteúdo do artigo em formato HTML formatado")
         @NotBlank(message = "O conteúdo HTML não pode ser vazio")
         String contentHtml,
+
+        @Schema(description = "Status do artigo (RASCUNHO ou PUBLICADO)", example = "PUBLICADO")
+        @Pattern(regexp = "^(?i)(RASCUNHO|PUBLICADO)$", message = "Status inválido. Use RASCUNHO ou PUBLICADO")
+        String status,
 
         @Schema(description = "Estrutura JSON original do editor TipTap",
                 example = "{\"type\": \"doc\", \"content\": [...]}")

@@ -1,7 +1,9 @@
-package com.brunofragadev.module.article.application;
+package com.brunofragadev.module.article.application.usecase;
 
-import com.brunofragadev.module.article.api.ArticleResponse;
-import com.brunofragadev.module.article.domain.ArticleRepository;
+import com.brunofragadev.module.article.api.dto.response.ArticleResponse;
+import com.brunofragadev.module.article.application.mapper.ArticleMapper;
+import com.brunofragadev.module.article.domain.exception.ArticleBySlugNotFoundException;
+import com.brunofragadev.module.article.domain.repository.ArticleRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +23,6 @@ public class GetArticleBySlugUseCase {
     public ArticleResponse execute(String slug) {
         return articleRepository.findBySlug(slug)
                 .map(articleMapper::toResponse)
-                .orElseThrow(() -> new RuntimeException("Artigo não encontrado com o slug: " + slug));
+                .orElseThrow(() -> new ArticleBySlugNotFoundException("Artigo não encontrado com o slug: " + slug));
     }
 }

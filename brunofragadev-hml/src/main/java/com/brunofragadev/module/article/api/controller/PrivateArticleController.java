@@ -1,7 +1,10 @@
-package com.brunofragadev.module.article.api;
+package com.brunofragadev.module.article.api.controller;
 
 import com.brunofragadev.infrastructure.default_return_api.ApiResponse;
-import com.brunofragadev.module.article.application.CreateArticleUseCase;
+import com.brunofragadev.module.article.api.dto.request.ArticleRequest;
+import com.brunofragadev.module.article.api.dto.response.ArticleResponse;
+import com.brunofragadev.module.article.application.usecase.CreateArticleUseCase;
+import com.brunofragadev.module.article.application.usecase.UpdateArticleUseCase;
 import com.brunofragadev.module.user.domain.entity.User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -21,9 +24,11 @@ import org.springframework.web.bind.annotation.*;
 public class PrivateArticleController {
 
     private final CreateArticleUseCase createArticleUseCase;
+    private final UpdateArticleUseCase updateArticleUseCase;
 
-    public PrivateArticleController(CreateArticleUseCase createArticleUseCase) {
+    public PrivateArticleController(CreateArticleUseCase createArticleUseCase, UpdateArticleUseCase updateArticleUseCase) {
         this.createArticleUseCase = createArticleUseCase;
+        this.updateArticleUseCase = updateArticleUseCase;
     }
 
     @PostMapping("/criar")
@@ -38,5 +43,15 @@ public class PrivateArticleController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(ApiResponse.success("Artigo criado com sucesso!", response));
+    }
+    @PutMapping("/atualizar/{id}")
+    @Operation(summary = "Atualizar artigo existente", description = "Altera os dados de um artigo já cadastrado. Requer ID válido.")
+    public ResponseEntity<ApiResponse<ArticleResponse>> updateArticle(
+            @PathVariable Long id,
+            @Valid @RequestBody ArticleRequest request,
+            @Parameter(hidden = true) @AuthenticationPrincipal User user) {
+
+        ArticleResponse response = updateArticleUseCase.execute(id, request);
+        return ResponseEntity.ok(ApiResponse.success("Artigo atualizado com sucesso!", response));
     }
 }

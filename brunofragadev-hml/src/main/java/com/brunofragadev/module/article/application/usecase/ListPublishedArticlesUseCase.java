@@ -1,8 +1,8 @@
-package com.brunofragadev.module.article.application;
+package com.brunofragadev.module.article.application.usecase;
 
-import com.brunofragadev.module.article.api.ArticleResponse;
-import com.brunofragadev.module.article.domain.ArticleRepository;
-import com.brunofragadev.module.article.domain.ArticleStatus;
+import com.brunofragadev.module.article.api.dto.response.ArticleResponse;
+import com.brunofragadev.module.article.application.mapper.ArticleMapper;
+import com.brunofragadev.module.article.domain.repository.ArticleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
