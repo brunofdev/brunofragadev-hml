@@ -1,6 +1,8 @@
 package com.brunofragadev.module.article.infrastructure.persistence;
 
 
+import com.brunofragadev.module.article.api.dto.response.ArticleResponse;
+import com.brunofragadev.module.article.api.dto.response.ArticleSummaryResponse;
 import com.brunofragadev.module.article.domain.entity.Article;
 import com.brunofragadev.module.article.domain.repository.ArticleRepository;
 import com.brunofragadev.module.article.domain.entity.ArticleStatus;
@@ -38,5 +40,9 @@ public class ArticleRepositoryAdapter implements ArticleRepository {
     @Override
     public Optional<Article> findById(Long id) {
         return repository.findById(id);
+    }
+    @Override
+    public List<Article> findLatestPublished() {
+        return repository.findTop5ByStatusOrderByDataCriacaoDesc(ArticleStatus.PUBLICADO);
     }
 }

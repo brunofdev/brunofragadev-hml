@@ -2,7 +2,9 @@ package com.brunofragadev.module.article.api.controller;
 
 import com.brunofragadev.infrastructure.default_return_api.ApiResponse;
 import com.brunofragadev.module.article.api.dto.response.ArticleResponse;
+import com.brunofragadev.module.article.api.dto.response.ArticleSummaryResponse;
 import com.brunofragadev.module.article.application.usecase.GetArticleBySlugUseCase;
+import com.brunofragadev.module.article.application.usecase.ListLatestArticlesUseCase;
 import com.brunofragadev.module.article.application.usecase.ListPublishedArticlesUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -18,17 +20,25 @@ import java.util.List;
 public class GeneralArticleController {
     private final ListPublishedArticlesUseCase listPublishedArticlesUseCase;
     private final GetArticleBySlugUseCase getArticleBySlugUseCase;
+    private final ListLatestArticlesUseCase listLatestArticlesUseCase;
 
     public GeneralArticleController(ListPublishedArticlesUseCase listPublishedArticlesUseCase,
-                                   GetArticleBySlugUseCase getArticleBySlugUseCase) {
+                                   GetArticleBySlugUseCase getArticleBySlugUseCase,
+                                   ListLatestArticlesUseCase listLatestArticlesUseCase) {
         this.listPublishedArticlesUseCase = listPublishedArticlesUseCase;
         this.getArticleBySlugUseCase = getArticleBySlugUseCase;
+        this.listLatestArticlesUseCase = listLatestArticlesUseCase;
     }
 
     @GetMapping("/listar-todos")
     @Operation(summary = "Listar todos os artigos publicados", description = "Retorna uma lista de artigos que estão disponíveis para leitura pública.")
-    public ResponseEntity<ApiResponse<List<ArticleResponse>>> listPublished() {
+    public ResponseEntity<ApiResponse<List<ArticleResponse>>> listAll() {
         return ResponseEntity.ok(ApiResponse.success("Artigos encontrados", listPublishedArticlesUseCase.execute()));
+    }
+    @GetMapping("/listar-ultimos-publicados")
+    @Operation(summary = "Listar ultimos publicados", description = "Retorna uma lista de 5 artigos que foram publicados por ultimo.")
+    public ResponseEntity<ApiResponse<List<ArticleSummaryResponse>>> listLastPublished() {
+        return ResponseEntity.ok(ApiResponse.success("Artigos encontrados", listLatestArticlesUseCase.execute()));
     }
 
     @GetMapping("/{slug}")
@@ -38,5 +48,6 @@ public class GeneralArticleController {
         ArticleResponse response = getArticleBySlugUseCase.execute(slug);
         return ResponseEntity.ok(ApiResponse.success("Recurso encontrado", response));
     }
+
 }
 

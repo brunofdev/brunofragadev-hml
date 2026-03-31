@@ -48,7 +48,10 @@ public class SecurityConfig {
             "/projetos/publicos",
             "/feedback/geral/listar-todos",
             "/feedback/projetos/listar-todos/**",
-            "/geral/artigos/listar-todos"
+            "/feedback/artigos/listar-todos/**",
+            "/geral/artigos/listar-todos",
+            "/geral/artigos/**",
+            "/geral/artigos/{slug}"
 
 
             //>>>>>>>>>>>>>LIBERADO PUBLICAMENTE PARA TESTES APENAS<<<<<<<<<<<
@@ -72,6 +75,10 @@ public class SecurityConfig {
             entry("/feedback/projetos/criar", Role.USER),
             entry("/feedback/projetos/atualizar/**", Role.USER),
             entry("/feedback/projetos/excluir/**", Role.USER),
+
+            entry("/feedback/artigos/criar", Role.USER),
+            entry("/feedback/artigos/atualizar/**", Role.USER),
+            entry("/feedback/artigos/excluir/**", Role.USER),
 
             // =========================================
             // ADMINISTRAÇÃO (Apenas ADMIN3)

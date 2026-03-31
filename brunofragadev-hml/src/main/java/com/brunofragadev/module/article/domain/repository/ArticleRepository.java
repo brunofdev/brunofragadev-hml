@@ -1,5 +1,7 @@
 package com.brunofragadev.module.article.domain.repository;
 
+import com.brunofragadev.module.article.api.dto.response.ArticleResponse;
+import com.brunofragadev.module.article.api.dto.response.ArticleSummaryResponse;
 import com.brunofragadev.module.article.domain.entity.ArticleStatus;
 import com.brunofragadev.module.article.domain.entity.Article;
 
@@ -13,4 +15,5 @@ public interface ArticleRepository {
     List<Article> findAllByStatus(ArticleStatus status);
     List<Article> findAll();
     Optional<Article> findById(Long id);
+    List<Article> findLatestPublished();
 }

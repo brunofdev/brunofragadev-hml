@@ -68,7 +68,7 @@ public class Article extends Auditable {
         Article article = new Article();
         article.title = title;
         article.subtitle = subtitle;
-        article.slug = slug;
+        article.slug = slug.toLowerCase();
         article.coverImage = coverImage;
         article.fontFamily = fontFamily;
         article.contentHtml = contentHtml;
