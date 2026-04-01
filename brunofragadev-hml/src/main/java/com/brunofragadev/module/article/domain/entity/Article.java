@@ -45,11 +45,11 @@ public class Article extends Auditable {
     @Column(name = "font_family", length = 50)
     private String fontFamily;
 
-    @Column(name = "content_html", columnDefinition = "LONGTEXT", nullable = false)
+    @Column(name = "content_html", columnDefinition = "TEXT", nullable = false)
     private String contentHtml;
 
     @JdbcTypeCode(SqlTypes.JSON)
-    @Column(name = "content_json", columnDefinition = "JSON", nullable = false)
+    @Column(name = "content_json", columnDefinition = "TEXT", nullable = false)
     private String contentJson;
 
     @ElementCollection(fetch = FetchType.LAZY)
