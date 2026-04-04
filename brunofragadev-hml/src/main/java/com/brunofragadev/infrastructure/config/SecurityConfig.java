@@ -86,7 +86,7 @@ public class SecurityConfig {
             entry("/paineladm/projetos/**", Role.ADMIN3),
             entry("/paineladm/artigos/**", Role.ADMIN3),
             entry("/paineladm/atualizar/{id}", Role.ADMIN3),
-            entry("/usuario/obter-todos", Role.ADMIN3)
+            entry("/usuario/obter-todos", Role.ADMIN3) //bloqueado
     );
 
     @Bean
