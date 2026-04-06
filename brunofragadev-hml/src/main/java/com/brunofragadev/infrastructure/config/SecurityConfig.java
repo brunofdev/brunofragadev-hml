@@ -49,7 +49,8 @@ public class SecurityConfig {
             "/feedback/projetos/listar-todos/**",
             "/feedback/artigos/listar-todos/**",
             "/geral/artigos/listar-todos",
-            "/geral/artigos/**",
+            "/geral/artigos/listar-todos-publicados",
+            "/geral/artigos/listar-ultimos-publicados",
             "/geral/artigos/{slug}"
 
 
@@ -86,7 +87,7 @@ public class SecurityConfig {
             entry("/paineladm/projetos/**", Role.ADMIN3),
             entry("/paineladm/artigos/**", Role.ADMIN3),
             entry("/paineladm/atualizar/{id}", Role.ADMIN3),
-            entry("/usuario/obter-todos", Role.ADMIN3) //bloqueado
+            entry("/usuario/obter-todos", Role.ADMIN3)
     );
 
     @Bean
