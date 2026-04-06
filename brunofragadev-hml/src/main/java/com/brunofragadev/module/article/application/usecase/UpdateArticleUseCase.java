@@ -37,7 +37,7 @@ public class UpdateArticleUseCase {
                 request.contentHtml(),
                 request.contentJsonToString(),
                 request.tags(),
-                request.status() != null ? ArticleStatus.valueOf(request.status().toUpperCase()) : article.getStatus()
+                request.status()
         );
 
         articleRepository.save(article);

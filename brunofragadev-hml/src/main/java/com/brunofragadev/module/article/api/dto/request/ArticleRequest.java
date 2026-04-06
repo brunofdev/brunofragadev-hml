@@ -1,5 +1,6 @@
 package com.brunofragadev.module.article.api.dto.request;
 
+import com.brunofragadev.module.article.domain.entity.ArticleStatus;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
@@ -40,8 +41,8 @@ public record ArticleRequest(
         String contentHtml,
 
         @Schema(description = "Status do artigo (RASCUNHO ou PUBLICADO)", example = "PUBLICADO")
-        @Pattern(regexp = "^(?i)(RASCUNHO|PUBLICADO)$", message = "Status inválido. Use RASCUNHO ou PUBLICADO")
-        String status,
+        @NotNull(message = "O status não pode ser nulo")
+        ArticleStatus status,
 
         @Schema(description = "Estrutura JSON original do editor TipTap",
                 example = "{\"type\": \"doc\", \"content\": [...]}")
@@ -50,7 +51,7 @@ public record ArticleRequest(
 
 ) {
     /**
-     * Método auxiliar (Rico) para converter o JsonNode em String
+     * Metodo auxiliar (Rico) para converter o JsonNode em String
      * antes de passar para a Entity.
      */
     public String contentJsonToString() {

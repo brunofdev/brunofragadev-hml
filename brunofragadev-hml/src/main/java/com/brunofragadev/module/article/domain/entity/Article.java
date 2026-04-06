@@ -61,7 +61,8 @@ public class Article extends Auditable {
     private LocalDateTime publishedAt;
 
     public static Article criar(String title, String subtitle, String slug, String coverImage,
-                                String fontFamily, String contentHtml, String contentJson, Set<String> tags) {
+                                String fontFamily, String contentHtml, String contentJson, Set<String> tags,
+                                ArticleStatus status) {
 
         validarDadosCriacao(title, slug, contentHtml, contentJson);
 
@@ -74,7 +75,7 @@ public class Article extends Auditable {
         article.contentHtml = contentHtml;
         article.contentJson = contentJson;
         article.tags = (tags != null) ? tags : new HashSet<>();
-        article.status = ArticleStatus.RASCUNHO;
+        article.status = (status == null) ? ArticleStatus.RASCUNHO : status;
         return article;
     }
 

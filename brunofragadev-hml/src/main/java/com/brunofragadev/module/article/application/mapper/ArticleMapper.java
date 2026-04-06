@@ -29,7 +29,8 @@ public class ArticleMapper {
                 request.fontFamily(),
                 request.contentHtml(),
                 request.contentJson().toString(),
-                request.tags()
+                request.tags(),
+                request.status()
         );
     }
 

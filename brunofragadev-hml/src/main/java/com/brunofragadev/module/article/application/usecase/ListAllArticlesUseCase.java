@@ -1,5 +1,6 @@
 package com.brunofragadev.module.article.application.usecase;
 
+
 import com.brunofragadev.module.article.api.dto.response.ArticleResponse;
 import com.brunofragadev.module.article.application.mapper.ArticleMapper;
 import com.brunofragadev.module.article.domain.entity.ArticleStatus;
@@ -12,13 +13,13 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class ListPublishedArticlesUseCase {
+public class ListAllArticlesUseCase {
 
     private final ArticleRepository articleRepository;
     private final ArticleMapper articleMapper;
 
     public List<ArticleResponse> execute() {
-        return articleRepository.findAllByStatus(ArticleStatus.PUBLICADO)
+        return articleRepository.findAll()
                 .stream()
                 .map(articleMapper::toResponse)
                 .collect(Collectors.toList());
