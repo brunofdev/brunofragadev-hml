@@ -6,6 +6,7 @@ import com.brunofragadev.module.project.domain.entity.*;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class ProjectMapper {
@@ -41,7 +42,7 @@ public class ProjectMapper {
                     step.setText(stepRequest.text());
                     step.setCmd(stepRequest.cmd());
                     return step;
-                }).toList();
+                }).collect(Collectors.toList());
                 setup.setSteps(stepsList);
             }
             project.setSetup(setup);
@@ -56,7 +57,7 @@ public class ProjectMapper {
                 projectImage.setLegenda(imageRequest.legenda());
 
                 return projectImage;
-            }).toList();
+            }).collect(Collectors.toList());
             project.setGaleria(images);
         }
 
