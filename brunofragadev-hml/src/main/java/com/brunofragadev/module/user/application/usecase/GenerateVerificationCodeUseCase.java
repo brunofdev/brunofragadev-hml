@@ -24,13 +24,11 @@ public class GenerateVerificationCodeUseCase {
     @Transactional
     public void execute(String userName) {
         User user = userRepository.findByUserName(userName.toUpperCase())
-                .orElseThrow(() -> new UserNotFoundException("Username not found"));
-
+                .orElseThrow(() -> new UserNotFoundException("Nome de usuario não encontrado"));
         String verificationCode = generateVerificationCode();
         user.definirCodigoVerificacao(verificationCode, LocalDateTime.now().plusMinutes(5));
-
         userRepository.save(user);
-        emailService.sendVerificationEmail(user.getEmail(), user.getUsername(), verificationCode);
+        emailService.sendVerificationEmail(user.getEmail(), user.getUsername(), user.getVerificationCode().getCodigo());
     }
 
     private String generateVerificationCode() {

@@ -161,9 +161,6 @@ public class User implements UserDetails {
         this.nome = nome;
     }
 
-    public void setUserName(String userName) {
-        this.userName = (userName != null) ? userName.toUpperCase() : null;
-    }
 
     public void setNomePublico(String nomePublico) {
         this.nomePublico = nomePublico;

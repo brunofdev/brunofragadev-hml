@@ -6,9 +6,11 @@ import com.brunofragadev.module.user.api.dto.response.UserDTO;
 import com.brunofragadev.module.user.domain.entity.User;
 import com.brunofragadev.module.user.application.mapper.UserMapper;
 import com.brunofragadev.module.user.application.validator.UserValidator;
+import com.brunofragadev.module.user.domain.event.UserRegisteredEvent;
 import com.brunofragadev.module.user.domain.repository.UserRepository;
 import com.brunofragadev.module.user.api.dto.request.UserRegistrationRequest;
 import jakarta.transaction.Transactional;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -22,35 +24,30 @@ public class RegisterUserUseCase {
     private final UserValidator userValidator;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
-    private final EmailService emailService;
+    private final ApplicationEventPublisher eventPublisher;
 
     public RegisterUserUseCase(UserRepository userRepository,
                                UserValidator userValidator,
                                UserMapper userMapper,
                                PasswordEncoder passwordEncoder,
-                               EmailService emailService) {
+                               ApplicationEventPublisher eventPublisher) {
         this.userRepository = userRepository;
         this.userValidator = userValidator;
         this.userMapper = userMapper;
         this.passwordEncoder = passwordEncoder;
-        this.emailService = emailService;
+        this.eventPublisher = eventPublisher;
     }
 
     @Transactional
     public UserDTO execute(UserRegistrationRequest request) {
         userValidator.validateNewUser(request);
-
         String encodedPassword = passwordEncoder.encode(request.senha());
         User user = userMapper.toNewUser(request, encodedPassword);
-
         String verificationCode = generateVerificationCode();
         user.definirCodigoVerificacao(verificationCode, LocalDateTime.now().plusMinutes(5));
-
         userRepository.save(user);
-
         UserDTO userDTO = userMapper.toDTO(user);
-        emailService.sendVerificationEmail(userDTO.email(), userDTO.userName(), verificationCode);
-
+        eventPublisher.publishEvent(new UserRegisteredEvent(user));
         return userDTO;
     }
 

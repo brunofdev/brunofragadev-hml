@@ -2,6 +2,7 @@ package com.brunofragadev.infrastructure.email;
 
 import com.brunofragadev.module.feedback.api.dto.response.FeedbackDTO;
 import com.brunofragadev.module.user.api.dto.response.UserDTO;
+import com.brunofragadev.module.user.domain.entity.VerificationCode;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;

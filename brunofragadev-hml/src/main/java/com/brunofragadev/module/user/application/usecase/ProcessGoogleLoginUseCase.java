@@ -3,9 +3,11 @@ package com.brunofragadev.module.user.application.usecase;
 import com.brunofragadev.infrastructure.email.EmailService;
 import com.brunofragadev.module.user.api.dto.response.UserDTO;
 import com.brunofragadev.module.user.domain.entity.User;
+import com.brunofragadev.module.user.domain.event.ActivateAccountEvent;
 import com.brunofragadev.module.user.domain.repository.UserRepository;
 import com.brunofragadev.module.user.application.mapper.UserMapper;
 import jakarta.transaction.Transactional;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,20 +21,24 @@ public class ProcessGoogleLoginUseCase {
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
+    private final ApplicationEventPublisher eventPublisher;
 
-    public ProcessGoogleLoginUseCase(UserRepository userRepository, UserMapper userMapper,
-                                     PasswordEncoder passwordEncoder, EmailService emailService) {
+    public ProcessGoogleLoginUseCase(UserRepository userRepository,
+                                     UserMapper userMapper,
+                                     PasswordEncoder passwordEncoder,
+                                     EmailService emailService,
+                                     ApplicationEventPublisher eventPublisher) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.passwordEncoder = passwordEncoder;
         this.emailService = emailService;
+        this.eventPublisher = eventPublisher;
     }
 
     @Transactional
     public UserDTO execute(String email, String name, String photoUrl) {
         String formattedEmail = email.toUpperCase();
         Optional<User> existingUser = userRepository.findByEmail(formattedEmail);
-
         if (existingUser.isPresent()) {
             User user = existingUser.get();
             if (photoUrl != null && !photoUrl.equals(user.getFotoperfil())) {
@@ -56,9 +62,8 @@ public class ProcessGoogleLoginUseCase {
         );
 
         userRepository.save(newUser);
-
         UserDTO newUserDTO = userMapper.toDTO(newUser);
-        emailService.sendWelcomeEmail(newUserDTO);
+        eventPublisher.publishEvent(new ActivateAccountEvent(newUserDTO));
 
         return newUserDTO;
     }
