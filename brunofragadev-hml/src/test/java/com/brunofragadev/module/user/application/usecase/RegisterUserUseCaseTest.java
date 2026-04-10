@@ -72,7 +72,7 @@ class RegisterUserUseCaseTest {
                 "O código de verificação deve ser definido antes de salvar");
 
         verify(userValidator).validateNewUser(request);
-        verify(emailService).sendVerificationEmail(eq("BRUNO@EMAIL.COM"), anyString(), anyString());
+        verify(emailService).sendVerificationEmail(eq("BRUNO@EMAIL.COM"), anyString(), any());
     }
 
     @Test
@@ -96,7 +96,7 @@ class RegisterUserUseCaseTest {
         when(userMapper.toNewUser(any(UserRegistrationRequest.class), anyString())).thenReturn(user);
         when(userMapper.toDTO(any(User.class))).thenReturn(userDTO);
         doThrow(new RuntimeException("Falha ao enviar email"))
-                .when(emailService).sendVerificationEmail(anyString(), anyString(), anyString());
+                .when(emailService).sendVerificationEmail(anyString(), anyString(), any());
 
         assertThrows(RuntimeException.class, () -> registerUserUseCase.execute(request));
         verify(userRepository).save(any(User.class));
