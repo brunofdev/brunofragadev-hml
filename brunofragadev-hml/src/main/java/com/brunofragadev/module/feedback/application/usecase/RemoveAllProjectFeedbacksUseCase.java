@@ -6,6 +6,7 @@ import com.brunofragadev.module.feedback.domain.exception.FeedbackNotFoundExcept
 import com.brunofragadev.module.feedback.domain.exception.NullFeedbackReferenceException;
 import com.brunofragadev.module.feedback.domain.repository.FeedbackRepository;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -32,6 +33,7 @@ public class RemoveAllProjectFeedbacksUseCase {
         this.feedbackRepository = feedbackRepository;
     }
 
+    @Transactional
     public void execute (Long referenceId){
         if (referenceId == null){
             throw new NullFeedbackReferenceException("Referencia não pode ser vazia para deletar os feedbacks relacionados a um projeto");

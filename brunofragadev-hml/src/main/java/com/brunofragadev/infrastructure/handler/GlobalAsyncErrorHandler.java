@@ -18,6 +18,8 @@ public class GlobalAsyncErrorHandler implements AsyncUncaughtExceptionHandler {
 
     @Override
     public void handleUncaughtException(Throwable ex, Method method, Object... params) {
+        System.err.println("Falha no método: " + method.getName());
+        ex.printStackTrace();
         createNewErrorLogUseCase.execute(
                 (Exception) ex,
                 method.getDeclaringClass().getSimpleName() + "." + method.getName(),

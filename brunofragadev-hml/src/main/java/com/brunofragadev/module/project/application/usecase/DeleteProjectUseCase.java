@@ -12,12 +12,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class DeleteProjectUseCase {
 
     private final ProjectRepository projectRepository;
-    private final RemoveAllProjectFeedbacksUseCase removeAllProjectFeedbacksUseCase;
     private final ApplicationEventPublisher eventPublisher;
 
-    public DeleteProjectUseCase(ProjectRepository projectRepository, RemoveAllProjectFeedbacksUseCase removeAllProjectFeedbacksUseCase, ApplicationEventPublisher eventPublisher) {
+    public DeleteProjectUseCase(ProjectRepository projectRepository, ApplicationEventPublisher eventPublisher) {
         this.projectRepository = projectRepository;
-        this.removeAllProjectFeedbacksUseCase = removeAllProjectFeedbacksUseCase;
         this.eventPublisher = eventPublisher;
     }
 
@@ -27,7 +25,6 @@ public class DeleteProjectUseCase {
            throw new EntityNotFoundException("Project not found with ID: " + id);
        }
        projectRepository.deleteById(id);
-       removeAllProjectFeedbacksUseCase.execute(id);
        eventPublisher.publishEvent(new ProjectDeletedEvent(id));
     }
 }
