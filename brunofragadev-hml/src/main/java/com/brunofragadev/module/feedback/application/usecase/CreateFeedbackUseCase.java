@@ -18,7 +18,6 @@ public class CreateFeedbackUseCase {
 
     private final FeedbackRepository feedbackRepository;
     private final FeedbackMapper feedbackMapper;
-
     private final ReferenceResolverFactory resolverFactory;
     private final ApplicationEventPublisher eventPublisher;
 

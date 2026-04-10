@@ -6,6 +6,7 @@ import com.brunofragadev.module.user.api.dto.response.UserDTO;
 import com.brunofragadev.module.user.domain.entity.User;
 import com.brunofragadev.module.user.application.mapper.UserMapper;
 import com.brunofragadev.module.user.application.validator.UserValidator;
+import com.brunofragadev.module.user.domain.event.GeneratedCodeEvent;
 import com.brunofragadev.module.user.domain.event.UserRegisteredEvent;
 import com.brunofragadev.module.user.domain.repository.UserRepository;
 import com.brunofragadev.module.user.api.dto.request.UserRegistrationRequest;
@@ -47,7 +48,7 @@ public class RegisterUserUseCase {
         user.definirCodigoVerificacao(verificationCode, LocalDateTime.now().plusMinutes(5));
         userRepository.save(user);
         UserDTO userDTO = userMapper.toDTO(user);
-        eventPublisher.publishEvent(new UserRegisteredEvent(user));
+        eventPublisher.publishEvent(new GeneratedCodeEvent(user));
         return userDTO;
     }
 

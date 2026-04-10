@@ -2,9 +2,11 @@ package com.brunofragadev.module.user.application.usecase;
 
 import com.brunofragadev.infrastructure.email.EmailService;
 import com.brunofragadev.module.user.domain.entity.User;
+import com.brunofragadev.module.user.domain.event.GeneratedCodeEvent;
 import com.brunofragadev.module.user.domain.exception.UserNotFoundException;
 import com.brunofragadev.module.user.domain.repository.UserRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
@@ -14,11 +16,11 @@ import java.time.LocalDateTime;
 public class GenerateVerificationCodeUseCase {
 
     private final UserRepository userRepository;
-    private final EmailService emailService;
+    private final ApplicationEventPublisher eventPublisher;
 
-    public GenerateVerificationCodeUseCase(UserRepository userRepository, EmailService emailService) {
+    public GenerateVerificationCodeUseCase(UserRepository userRepository, ApplicationEventPublisher eventPublisher) {
         this.userRepository = userRepository;
-        this.emailService = emailService;
+        this.eventPublisher = eventPublisher;
     }
 
     @Transactional
@@ -28,7 +30,7 @@ public class GenerateVerificationCodeUseCase {
         String verificationCode = generateVerificationCode();
         user.definirCodigoVerificacao(verificationCode, LocalDateTime.now().plusMinutes(5));
         userRepository.save(user);
-        emailService.sendVerificationEmail(user.getEmail(), user.getUsername(), user.getVerificationCode().getCodigo());
+        eventPublisher.publishEvent(new GeneratedCodeEvent(user));
     }
 
     private String generateVerificationCode() {
