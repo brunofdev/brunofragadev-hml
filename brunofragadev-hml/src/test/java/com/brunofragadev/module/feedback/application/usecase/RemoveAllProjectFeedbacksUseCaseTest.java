@@ -1,5 +1,6 @@
 package com.brunofragadev.module.feedback.application.usecase;
 
+import com.brunofragadev.module.feedback.domain.exception.NullFeedbackReferenceException;
 import com.brunofragadev.module.feedback.domain.repository.FeedbackRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,7 +28,7 @@ class RemoveAllProjectFeedbacksUseCaseTest {
     void execute() {
         Long idNull = null;
 
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+        NullFeedbackReferenceException exception = assertThrows(NullFeedbackReferenceException.class, () -> {
            useCase.execute(idNull);
         });
 
