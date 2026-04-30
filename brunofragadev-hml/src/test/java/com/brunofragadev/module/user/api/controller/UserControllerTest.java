@@ -179,7 +179,7 @@ class UserControllerTest {
         mockMvc.perform(get("/usuario/meus-dados")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value("Dados do usario autenticado"));
+                .andExpect(jsonPath("$.message").value("Dados do usuário autenticado"));
     }
 
     @Test

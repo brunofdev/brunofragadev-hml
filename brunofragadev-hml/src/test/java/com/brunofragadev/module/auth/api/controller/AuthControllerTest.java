@@ -10,12 +10,11 @@ import com.brunofragadev.module.auth.application.usecase.ApiGoogleAuthUseCase;
 import com.brunofragadev.module.auth.application.usecase.AuthUserUseCase;
 import com.brunofragadev.module.auth.application.usecase.AuthorizationService;
 import com.brunofragadev.module.user.api.dto.response.UserDTO;
-import com.brunofragadev.module.user.domain.entitie.UserDTOBuilder;
+import com.brunofragadev.module.user.domain.entity.UserDTOBuilder;
 
 // Imports de Ferramentas e Framework
 import com.brunofragadev.module.user.domain.exception.InvalidCredentialsException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,7 +96,7 @@ class AuthControllerTest {
     }
 
     @Test
-    @DisplayName("Deve permitir acesso ao endpoint de admin sem considerar filtros de segurança")
+    @DisplayName("Deve retornar 200 no endpoint de validação de admin (sem filtros de segurança ativos)")
     void deveRetornar200AoValidarAdmin() throws Exception {
         mockMvc.perform(get("/auth/validar-admin"))
                 .andExpect(status().isOk())
@@ -126,37 +125,3 @@ class AuthControllerTest {
                 .andExpect(status().isUnauthorized());
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

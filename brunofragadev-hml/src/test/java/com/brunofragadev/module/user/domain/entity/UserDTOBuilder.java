@@ -1,6 +1,6 @@
-package com.brunofragadev.module.user.domain.entitie;
+package com.brunofragadev.module.user.domain.entity;
+
 import com.brunofragadev.module.user.api.dto.response.UserDTO;
-import com.brunofragadev.module.user.domain.entity.Role;
 
 public class UserDTOBuilder {
 
